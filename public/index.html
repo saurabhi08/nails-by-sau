@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- basic html setup -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nail's By Sau - Professional nail artistry services. Book your appointment online for manicures, nail art, and extensions.">
+    <meta name="keywords" content="nail artist, manicure, nail art, nail extensions, booking, appointment">
+    <meta name="author" content="Nail's By Sau">
+    <title>Nail's By Sau - Professional Nail Artistry Services</title>
+    
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <!-- css files -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- font awesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- preload for faster loading -->
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="js/main.js" as="script">
+</head>
+<body>
+    <!-- skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- header section -->
+    <header class="header" role="banner">
+        <div class="header-content">
+            <a href="index.html" class="logo" aria-label="Nail's By Sau - Home">
+                <i class="fas fa-paint-brush" aria-hidden="true"></i>
+                Nail's By Sau
+            </a>
+            
+            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open navigation menu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            
+            <nav class="nav-menu" id="nav-menu" role="navigation" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link active" aria-current="page">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="services.html" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="book-appointment.html" class="nav-link">Book Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="my-account.html" class="nav-link">My Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="admin-dashboard.html" class="nav-link">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item customer-only" style="display: none;">
+                        <a href="customer-dashboard.html" class="nav-link">
+                            <i class="fas fa-user"></i> My Appointments
+                        </a>
+                    </li>
+                    <li class="nav-item customer-only" style="display: none;">
+                        <a href="#" onclick="window.CustomerAuth.signOutCustomer()" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                    <li class="nav-item guest-only">
+                        <a href="customer-login.html" class="nav-link">
+                            <i class="fas fa-sign-in-alt"></i> Customer Login
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- main content area -->
+    <main id="main-content" class="main" role="main">
+        <!-- hero section with image -->
+        <section class="hero" aria-labelledby="hero-heading">
+            <div class="container">
+                <div class="hero-image-with-text">
+                    <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Beautiful manicured hands with elegant purple nail art and jewelry" 
+                         class="hero-main-img">
+                    <div class="hero-text-overlay-on-image">
+                    <h1 id="hero-heading">Welcome to Nail's By Sau</h1>
+                        <p>Transform your nails with my professional artistry services. From classic manicures to stunning nail art, I create beautiful, long-lasting results that make you feel confident and glamorous.</p>
+                    <div class="hero-actions">
+                        <a href="book-appointment.html" class="btn btn-large" aria-describedby="hero-description">
+                            <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                            Book Your Appointment
+                        </a>
+                        <a href="services.html" class="btn btn-secondary btn-large">
+                            <i class="fas fa-list" aria-hidden="true"></i>
+                                View My Services
+                        </a>
+                    </div>
+                        <p id="hero-description" class="sr-only">Book an appointment to get started with my nail services</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="container" aria-labelledby="features-heading">
+            <h2 id="features-heading" class="text-center">Why Choose Nail's By Sau?</h2>
+            <div class="grid grid-3">
+                <div class="card text-center">
+                    <div class="card-icon">
+                        <i class="fas fa-star" aria-hidden="true"></i>
+                    </div>
+                    <h3>Premium Quality</h3>
+                    <p>I use only the finest products and techniques to ensure your nails look beautiful and last longer.</p>
+                </div>
+                
+                <div class="card text-center">
+                    <div class="card-icon">
+                        <i class="fas fa-user-friends" aria-hidden="true"></i>
+                    </div>
+                    <h3>Expert Artistry</h3>
+                    <p>As a skilled nail artist, I have years of experience creating stunning designs tailored to your style.</p>
+                </div>
+                
+                <div class="card text-center">
+                    <div class="card-icon">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                    </div>
+                    <h3>Convenient Booking</h3>
+                    <p>Book your appointment online 24/7. Easy scheduling with instant confirmation and reminders.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="container" aria-labelledby="services-heading">
+            <h2 id="services-heading" class="text-center">Popular Services</h2>
+            <div class="services-grid">
+                <div class="service-card" data-service-id="manicure" tabindex="0" role="button" aria-label="View Manicure service details">
+                    <div class="service-image" style="background-image: url('images/classic manicure.png'); background-size: cover; background-position: center;" aria-hidden="true"></div>
+                    <div class="service-content">
+                        <h3 class="service-title">Classic Manicure</h3>
+                        <div class="service-price">$35</div>
+                        <div class="service-duration">60 minutes</div>
+                        <p>Professional nail shaping, cuticle care, and polish application for beautiful, healthy nails.</p>
+                        <a href="book-appointment.html?service=manicure" class="btn">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-service-id="nail-art" tabindex="0" role="button" aria-label="View Nail Art service details">
+                    <div class="service-image" style="background-image: url('images/nail art.png'); background-size: cover; background-position: center;" aria-hidden="true"></div>
+                    <div class="service-content">
+                        <h3 class="service-title">Nail Art Design</h3>
+                        <div class="service-price">$50</div>
+                        <div class="service-duration">90 minutes</div>
+                        <p>Custom nail art designs including hand-painted details, glitter, and decorative elements.</p>
+                        <a href="book-appointment.html?service=nail-art" class="btn">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-service-id="extensions" tabindex="0" role="button" aria-label="View Nail Extensions service details">
+                    <div class="service-image" style="background-image: url('images/nail extensions.png'); background-size: cover; background-position: center;" aria-hidden="true"></div>
+                    <div class="service-content">
+                        <h3 class="service-title">Nail Extensions</h3>
+                        <div class="service-price">$80</div>
+                        <div class="service-duration">120 minutes</div>
+                        <p>Professional nail extensions using high-quality materials for length and strength.</p>
+                        <a href="book-appointment.html?service=extensions" class="btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center" style="margin-top: 2rem;">
+                <a href="services.html" class="btn btn-secondary">View All Services</a>
+            </div>
+        </section>
+        
+        <section class="container" aria-labelledby="testimonials-heading">
+            <h2 id="testimonials-heading" class="text-center">What Our Clients Say</h2>
+            <div class="grid grid-2">
+                <div class="card">
+                    <div class="testimonial-content">
+                        <div class="testimonial-stars" aria-label="5 out of 5 stars">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        </div>
+                        <blockquote>
+                            <p>"Sau's attention to detail is incredible. My nails looked absolutely stunning and lasted for weeks!"</p>
+                            <cite>- Sampada</cite>
+                        </blockquote>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="testimonial-content">
+                        <div class="testimonial-stars" aria-label="5 out of 5 stars">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                        </div>
+                        <blockquote>
+                            <p>"The online booking system is so convenient. I can schedule my appointments anytime, anywhere!"</p>
+                            <cite>- Devanshi</cite>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="container" aria-labelledby="gallery-heading">
+            <h2 id="gallery-heading" class="text-center">My Nail Art Portfolio</h2>
+            <p class="text-center gallery-subtitle">Explore my latest nail art creations and get inspired for your next appointment</p>
+            
+            <div class="nail-art-gallery">
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="images/FZVG7058.JPG" 
+                             alt="Beautiful nude and silver glitter nail art with gold ring" 
+                             class="gallery-img">
+                        <div class="gallery-overlay">
+                            <button class="gallery-btn" onclick="openImageModal(this)">
+                                <i class="fas fa-search-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Nude & Silver Glitter</h3>
+                        <p>Elegant nude base with sparkling silver and blue glitter accents, featuring a stunning gold ring</p>
+                        <span class="gallery-category">Gel Manicure</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="images/VHVI7954.JPG" 
+                             alt="Vibrant fuchsia and floral gradient nail art with elegant rings" 
+                             class="gallery-img">
+                        <div class="gallery-overlay">
+                            <button class="gallery-btn" onclick="openImageModal(this)">
+                                <i class="fas fa-search-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Fuchsia & Floral Mix</h3>
+                        <p>Vibrant fuchsia pink with delicate floral patterns on gradient ombré, featuring elegant diamond rings</p>
+                        <span class="gallery-category">Nail Art</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="images/MTHC0532.JPG" 
+                             alt="Sophisticated French tip with silver glitter and lace design" 
+                             class="gallery-img">
+                        <div class="gallery-overlay">
+                            <button class="gallery-btn" onclick="openImageModal(this)">
+                                <i class="fas fa-search-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Glitter French Tips</h3>
+                        <p>Modern French manicure with silver glitter accents and intricate lace patterns on accent nail</p>
+                        <span class="gallery-category">Classic Manicure</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="images/1.png" 
+                             alt="Beautiful nail art design from your portfolio" 
+                             class="gallery-img">
+                        <div class="gallery-overlay">
+                            <button class="gallery-btn" onclick="openImageModal(this)">
+                                <i class="fas fa-search-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Artistic Design</h3>
+                        <p>Beautiful nail art showcasing professional artistry and creative vision</p>
+                        <span class="gallery-category">Nail Art</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="images/2.png" 
+                             alt="Stunning nail art creation from your collection" 
+                             class="gallery-img">
+                        <div class="gallery-overlay">
+                            <button class="gallery-btn" onclick="openImageModal(this)">
+                                <i class="fas fa-search-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Elegant Creation</h3>
+                        <p>Stunning nail art design with elegant details and professional finish</p>
+                        <span class="gallery-category">Gel Manicure</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="images/3.png" 
+                             alt="Beautiful nail art from your professional portfolio" 
+                             class="gallery-img">
+                        <div class="gallery-overlay">
+                            <button class="gallery-btn" onclick="openImageModal(this)">
+                                <i class="fas fa-search-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Creative Excellence</h3>
+                        <p>Creative nail art design demonstrating artistic excellence and skill</p>
+                        <span class="gallery-category">Nail Art</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="images/4.png" 
+                             alt="Professional nail artistry from your portfolio" 
+                             class="gallery-img">
+                        <div class="gallery-overlay">
+                            <button class="gallery-btn" onclick="openImageModal(this)">
+                                <i class="fas fa-search-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Professional Artistry</h3>
+                        <p>Professional nail artistry with attention to detail and quality craftsmanship</p>
+                        <span class="gallery-category">Nail Art</span>
+                    </div>
+                </div>
+                
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="images/5.jpg" 
+                             alt="Beautiful nail design from your collection" 
+                             class="gallery-img">
+                        <div class="gallery-overlay">
+                            <button class="gallery-btn" onclick="openImageModal(this)">
+                                <i class="fas fa-search-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="gallery-info">
+                        <h3>Masterpiece Design</h3>
+                        <p>Exceptional nail art showcasing mastery of technique and creative vision</p>
+                        <span class="gallery-category">Nail Art</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-cta text-center">
+                <p>Love what you see? Book an appointment to get your own custom nail art!</p>
+                <a href="book-appointment.html" class="btn btn-large">
+                    <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                    Book Your Nail Art Session
+                </a>
+            </div>
+        </section>
+        
+        <section class="container" aria-labelledby="cta-heading">
+            <div class="card text-center" style="background: linear-gradient(135deg, #ff69b4, #ff1493, #e91e63); color: var(--text-light);">
+                <h2 id="cta-heading">Ready to Transform Your Nails?</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Book your appointment today and experience the difference professional nail artistry can make.</p>
+                <div class="cta-actions">
+                    <a href="book-appointment.html" class="btn btn-large" style="background: var(--text-light); color: var(--text-dark);">
+                        <i class="fas fa-calendar-check" aria-hidden="true"></i>
+                        Book Appointment
+                    </a>
+                    <a href="contact.html" class="btn btn-large" style="background: var(--text-light); color: var(--text-dark); border-color: var(--text-light);">
+                        <i class="fas fa-phone" aria-hidden="true"></i>
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="services.html" class="footer-link">Services</a>
+                <a href="book-appointment.html" class="footer-link">Book Appointment</a>
+                <a href="contact.html" class="footer-link">Contact</a>
+                <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms-of-service.html" class="footer-link">Terms of Service</a>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Nail's By Sau. All rights reserved.</p>
+                <p>Professional nail artistry services with online booking convenience.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-services.js"></script>
+    <script src="js/firebase-customer-auth.js"></script>
+    
+    <script src="js/main.js"></script>
+    
+    <script>
+        function openImageModal(button) {
+            const card = button.closest('.gallery-card');
+            const img = card.querySelector('.gallery-img');
+            const title = card.querySelector('.gallery-info h3').textContent;
+            const description = card.querySelector('.gallery-info p').textContent;
+            
+            // Create modal
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 800px; padding: 0;">
+                    <div class="modal-header" style="padding: var(--spacing-lg); border-bottom: 1px solid var(--border-color);">
+                        <h3 style="margin: 0; color: var(--primary-color);">${title}</h3>
+                        <button class="modal-close" onclick="closeImageModal(this)" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted);">&times;</button>
+                    </div>
+                    <div class="modal-body" style="padding: 0;">
+                        <img src="${img.src}" alt="${img.alt}" style="width: 100%; height: auto; display: block;">
+                        <div style="padding: var(--spacing-lg);">
+                            <p style="margin: 0; color: var(--text-muted); font-size: var(--font-size-base);">${description}</p>
+                            <div style="margin-top: var(--spacing-lg); text-align: center;">
+                                <a href="book-appointment.html" class="btn btn-large">
+                                    <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                                    Book This Style
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeImageModal(modal.querySelector('.modal-close'));
+                }
+            });
+        }
+        
+        function closeImageModal(closeButton) {
+            const modal = closeButton.closest('.modal');
+            modal.remove();
+        }
+    </script>
+    
+    <style>
+        /* ===== CSS CUSTOM PROPERTIES ===== */
+        :root {
+            /* Colors */
+            --primary-color: #ff69b4;
+            --secondary-color: #000000;
+            --accent-color: #ff1493;
+            --text-dark: #2c3e50;
+            --text-light: #ffffff;
+            --text-muted: #666666;
+            --background-light: #ffffff;
+            --background-dark: #f8f9fa;
+            --border-color: #e9ecef;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+            
+            /* Status Colors */
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --error-color: #dc3545;
+            --info-color: #17a2b8;
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-xxl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            
+            /* Typography */
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-xxl: 1.5rem;
+            --font-size-xxxl: 2rem;
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-base: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--background-light);
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            padding: 8px;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            z-index: 1000;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: var(--spacing-md);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: var(--font-size-xxxl);
+        }
+
+        h2 {
+            font-size: var(--font-size-xxl);
+        }
+
+        h3 {
+            font-size: var(--font-size-xl);
+        }
+
+        h4 {
+            font-size: var(--font-size-lg);
+        }
+
+        h5, h6 {
+            font-size: var(--font-size-base);
+        }
+
+        p {
+            margin-bottom: var(--spacing-md);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        a:hover, a:focus {
+            color: var(--secondary-color);
+            text-decoration: underline;
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .main {
+            min-height: calc(100vh - 200px);
+            padding: var(--spacing-xl) 0;
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        .header {
+            background: var(--background-light);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+        }
+
+        .logo {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .logo i {
+            font-size: var(--font-size-xxl);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: var(--font-size-xl);
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .nav-toggle:hover, .nav-toggle:focus {
+            background: var(--background-dark);
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            color: var(--text-dark);
+        }
+
+        .nav-link:hover, .nav-link:focus {
+            background: rgba(255, 105, 180, 0.1);
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-link.active {
+            background: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: var(--font-size-base);
+            line-height: 1;
+        }
+
+        .btn:hover, .btn:focus {
+            background: var(--secondary-color);
+            color: var(--text-light);
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            backdrop-filter: blur(10px);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+        }
+
+        .btn-secondary:hover, .btn-secondary:focus {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border-color: var(--primary-color);
+        }
+
+        .btn-large {
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: var(--font-size-lg);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--background-light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-base);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* ===== GRID SYSTEM ===== */
+        .grid {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--text-dark);
+            color: var(--text-light);
+            padding: var(--spacing-xl) 0 var(--spacing-lg);
+            margin-top: var(--spacing-xxl);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .footer-link:hover, .footer-link:focus {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: var(--spacing-lg);
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .text-center {
+            text-align: center;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: var(--background-light);
+            padding: var(--spacing-xxl) 0;
+        }
+
+        .hero-image-with-text {
+            position: relative;
+            width: 100%;
+            margin-bottom: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero-main-img {
+            width: 100%;
+            height: 80vh;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-text-overlay-on-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(255, 105, 180, 0.4), rgba(75, 0, 130, 0.5));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: var(--spacing-xxl);
+        }
+
+        .hero-text-overlay-on-image h1 {
+            font-size: 4rem;
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.1;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-text-overlay-on-image p {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-xl);
+            max-width: 600px;
+            line-height: 1.6;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 400;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: var(--spacing-lg);
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 10;
+        }
+
+
+        /* ===== SERVICES ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .service-card {
+            background: var(--background-light);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .service-image {
+            height: 200px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: var(--font-size-xxl);
+        }
+
+        .service-content {
+            padding: var(--spacing-lg);
+        }
+
+        .service-title {
+            font-size: var(--font-size-xl);
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .service-price {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .service-duration {
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonial-content {
+            padding: var(--spacing-lg);
+        }
+        
+        .testimonial-stars {
+            color: var(--warning-color);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-lg);
+        }
+        
+        .testimonial-content blockquote {
+            font-style: italic;
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-lg);
+        }
+        
+        .testimonial-content cite {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* ===== CTA ACTIONS ===== */
+        .cta-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* ===== NAIL ART GALLERY ===== */
+        .nail-art-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+            margin: var(--spacing-xxl) 0;
+        }
+
+        .gallery-card {
+            background: var(--background-light);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+            border: 1px solid var(--border-color);
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .gallery-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-base);
+        }
+
+        .gallery-card:hover .gallery-img {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(255, 105, 180, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity var(--transition-base);
+        }
+
+        .gallery-card:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            color: var(--primary-color);
+            font-size: var(--font-size-lg);
+        }
+
+        .gallery-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .gallery-info {
+            padding: var(--spacing-lg);
+        }
+
+        .gallery-info h3 {
+            margin: 0 0 var(--spacing-sm) 0;
+            color: var(--text-dark);
+            font-size: var(--font-size-lg);
+        }
+
+        .gallery-info p {
+            margin: 0 0 var(--spacing-sm) 0;
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+            line-height: 1.4;
+        }
+
+        .gallery-category {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gallery-subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--text-muted);
+            margin-bottom: var(--spacing-xxl);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .gallery-cta {
+            margin-top: var(--spacing-xxl);
+            padding: var(--spacing-xl);
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.1), rgba(255, 20, 147, 0.05));
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 105, 180, 0.2);
+        }
+
+        .gallery-cta p {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-dark);
+        }
+
+        /* ===== MODAL STYLES ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--background-light);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            background: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--background-light);
+                box-shadow: var(--shadow-md);
+                padding: var(--spacing-md);
+            }
+            
+            .nav-menu.active {
+                display: block;
+            }
+            
+            .nav-list {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                align-items: stretch;
+            }
+            
+            .nav-link {
+                padding: var(--spacing-md);
+                text-align: center;
+                border-radius: var(--radius-md);
+            }
+            
+            .hero {
+                padding: var(--spacing-lg) 0;
+            }
+
+            .hero-main-img {
+                height: 60vh;
+            }
+
+            .hero-text-overlay-on-image {
+                padding: var(--spacing-lg);
+            }
+
+            .hero-text-overlay-on-image h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text-overlay-on-image p {
+                font-size: var(--font-size-lg);
+                max-width: 90%;
+            }
+            
+            .hero-actions,
+            .cta-actions {
+                flex-direction: column;
+                align-items: center;
+                gap: var(--spacing-md);
+            }
+            
+            .hero-actions .btn,
+            .cta-actions .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .nail-art-gallery {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+
+            .gallery-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .gallery-image {
+                height: 200px;
+            }
+        }
+    </style>
+</body>
+</html>
+
+
+

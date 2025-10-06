@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book your nail appointment online with Nail's By Sau. Choose your service, date, and time with my easy-to-use booking system.">
+    <meta name="keywords" content="book appointment, nail booking, online scheduling, nail artist appointment">
+    <meta name="author" content="Nail's By Sau">
+    <title>Book Appointment - Nail's By Sau</title>
+    
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="js/main.js" as="script">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <header class="header" role="banner">
+        <div class="header-content">
+            <a href="index.html" class="logo" aria-label="Nail's By Sau - Home">
+                <i class="fas fa-paint-brush" aria-hidden="true"></i>
+                Nail's By Sau
+            </a>
+            
+            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open navigation menu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            
+            <nav class="nav-menu" id="nav-menu" role="navigation" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="services.html" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="book-appointment.html" class="nav-link active" aria-current="page">Book Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="my-account.html" class="nav-link">My Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="admin-dashboard.html" class="nav-link">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main id="main-content" class="main" role="main">
+        <section class="page-header" aria-labelledby="page-heading">
+            <div class="container">
+                <h1 id="page-heading">Book Your Appointment</h1>
+                <p class="page-description">Select your preferred service, date, and time to schedule your nail appointment with me.</p>
+            </div>
+        </section>
+        
+        <section class="container" aria-labelledby="steps-heading">
+            <h2 id="steps-heading" class="sr-only">Booking Steps</h2>
+            <div class="booking-steps">
+                <div class="step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Service</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Date & Time</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Details</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Confirm</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="container" aria-labelledby="booking-heading">
+            <h2 id="booking-heading" class="sr-only">Appointment Booking Form</h2>
+            <form class="booking-form" id="booking-form" novalidate>
+                <div class="booking-step" id="step-1" aria-labelledby="service-heading">
+                    <div class="card">
+                        <h3 id="service-heading">Select Your Service</h3>
+                        <div class="service-selection">
+                            <div class="service-option" data-service="classic-manicure" tabindex="0" role="button" aria-label="Select Classic Manicure service">
+                                <div class="service-info">
+                                    <h4>Classic Manicure</h4>
+                                    <p>Professional nail shaping, cuticle care, and polish application</p>
+                                    <div class="service-details">
+                                        <span class="price">$35</span>
+                                        <span class="duration">60 min</span>
+                                    </div>
+                                </div>
+                                <div class="service-radio">
+                                    <input type="radio" name="service" value="classic-manicure" id="service-classic-manicure" required>
+                                    <label for="service-classic-manicure" class="sr-only">Select Classic Manicure</label>
+                                </div>
+                            </div>
+                            
+                            <div class="service-option" data-service="gel-manicure" tabindex="0" role="button" aria-label="Select Gel Manicure service">
+                                <div class="service-info">
+                                    <h4>Gel Manicure</h4>
+                                    <p>Long-lasting gel polish that stays chip-free for up to 3 weeks</p>
+                                    <div class="service-details">
+                                        <span class="price">$45</span>
+                                        <span class="duration">75 min</span>
+                                    </div>
+                                </div>
+                                <div class="service-radio">
+                                    <input type="radio" name="service" value="gel-manicure" id="service-gel-manicure" required>
+                                    <label for="service-gel-manicure" class="sr-only">Select Gel Manicure</label>
+                                </div>
+                            </div>
+                            
+                            <div class="service-option" data-service="french-manicure" tabindex="0" role="button" aria-label="Select French Manicure service">
+                                <div class="service-info">
+                                    <h4>French Manicure</h4>
+                                    <p>Classic French manicure with natural base and white tips</p>
+                                    <div class="service-details">
+                                        <span class="price">$40</span>
+                                        <span class="duration">70 min</span>
+                                    </div>
+                                </div>
+                                <div class="service-radio">
+                                    <input type="radio" name="service" value="french-manicure" id="service-french-manicure" required>
+                                    <label for="service-french-manicure" class="sr-only">Select French Manicure</label>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="service-option" data-service="nail-art" tabindex="0" role="button" aria-label="Select Nail Art Design service">
+                                <div class="service-info">
+                                    <h4>Nail Art Design</h4>
+                                    <p>Custom nail art designs with hand-painted details and decorative elements</p>
+                                    <div class="service-details">
+                                        <span class="price">$50</span>
+                                        <span class="duration">90 min</span>
+                                    </div>
+                                </div>
+                                <div class="service-radio">
+                                    <input type="radio" name="service" value="nail-art" id="service-nail-art" required>
+                                    <label for="service-nail-art" class="sr-only">Select Nail Art Design</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="booking-step" id="step-2" aria-labelledby="datetime-heading" style="display: none;">
+                    <div class="card">
+                        <h3 id="datetime-heading">Select Date & Time</h3>
+                        
+                        <div class="calendar">
+                            <div class="calendar-header">
+                                <button type="button" class="calendar-nav prev" aria-label="Previous month">
+                                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                                </button>
+                                <h4 class="calendar-month"></h4>
+                                <button type="button" class="calendar-nav next" aria-label="Next month">
+                                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-grid" role="grid" aria-label="Calendar">
+                            </div>
+                        </div>
+                        
+                        <div class="time-selection">
+                            <h4>Available Time Slots</h4>
+                            <div class="time-slots" role="group" aria-label="Available time slots">
+                            </div>
+                        </div>
+                        
+                        <input type="hidden" name="appointment-date" id="appointment-date" required>
+                        <input type="hidden" name="appointment-time" id="appointment-time" required>
+                    </div>
+                </div>
+                
+                <div class="booking-step" id="step-3" aria-labelledby="details-heading" style="display: none;">
+                    <div class="card">
+                        <h3 id="details-heading">Your Details</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name" class="form-label">First Name *</label>
+                                <input type="text" id="first-name" name="first-name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name" class="form-label">Last Name *</label>
+                                <input type="text" id="last-name" name="last-name" class="form-input" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address *</label>
+                            <input type="email" id="email" name="email" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="client-address" class="form-label">Your Address (for our records) *</label>
+                            <input type="text" id="client-address" name="client-address" class="form-input" placeholder="Enter your address" required>
+                            <small style="color: #666; font-size: 0.875rem; margin-top: 4px; display: block;">
+                                📍 Our studio: 50 Strathaven Drive, Unit 12, Mississauga, ON<br>
+                                We'll send you detailed directions after booking confirmation
+                            </small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes" class="form-label">Special Requests or Notes</label>
+                            <textarea id="notes" name="notes" class="form-textarea" rows="4" placeholder="Any special requests, allergies, or notes for your appointment..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="booking-step" id="step-4" aria-labelledby="confirm-heading" style="display: none;">
+                    <div class="card">
+                        <h3 id="confirm-heading">Confirm Your Appointment</h3>
+                        
+                        <div class="appointment-summary">
+                            <div class="summary-item">
+                                <strong>Service:</strong>
+                                <span id="summary-service"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Date:</strong>
+                                <span id="summary-date"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Time:</strong>
+                                <span id="summary-time"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Duration:</strong>
+                                <span id="summary-duration"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Price:</strong>
+                                <span id="summary-price"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Client:</strong>
+                                <span id="summary-client"></span>
+                            </div>
+                            <div class="summary-item">
+                                <strong>Contact:</strong>
+                                <span id="summary-contact"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="terms" required>
+                                <span class="checkmark"></span>
+                                I agree to the <a href="terms-of-service.html" target="_blank">Terms of Service</a> and <a href="privacy-policy.html" target="_blank">Privacy Policy</a>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="newsletter">
+                                <span class="checkmark"></span>
+                                Subscribe to our newsletter for special offers and updates
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="booking-navigation">
+                    <button type="button" class="btn btn-secondary" id="prev-btn" style="display: none;">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                        Previous
+                    </button>
+                    <button type="button" class="btn" id="next-btn">
+                        Next
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                    <button type="submit" class="btn" id="submit-btn" style="display: none;">
+                        <i class="fas fa-calendar-check" aria-hidden="true"></i>
+                        Confirm Booking
+                    </button>
+                </div>
+            </form>
+        </section>
+        
+        <section class="container" aria-labelledby="tips-heading">
+            <h2 id="tips-heading" class="sr-only">Booking Tips</h2>
+            <div class="card">
+                <h3>Booking Tips</h3>
+                <div class="grid grid-2">
+                    <div class="tip-item">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                        <h4>Arrive on Time</h4>
+                        <p>Please arrive 5-10 minutes before your scheduled appointment time.</p>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                        <h4>Booking Policy</h4>
+                        <p>Appointments can be cancelled or rescheduled up to 24 hours in advance.</p>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-credit-card" aria-hidden="true"></i>
+                        <h4>Payment</h4>
+                        <p>Payment is due at the time of service. We accept cash, credit cards, and digital payments.</p>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-user-friends" aria-hidden="true"></i>
+                        <h4>Group Bookings</h4>
+                        <p>For groups of 3 or more, please call us directly to arrange your appointments.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="services.html" class="footer-link">Services</a>
+                <a href="book-appointment.html" class="footer-link">Book Appointment</a>
+                <a href="contact.html" class="footer-link">Contact</a>
+                <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms-of-service.html" class="footer-link">Terms of Service</a>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Nail's By Sau. All rights reserved.</p>
+                <p>Professional nail artistry services with online booking convenience.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-appointments.js"></script>
+    <script src="js/firebase-services.js"></script>
+    
+    <!-- Payment Integration -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        // Initialize Stripe with your publishable key
+        const stripe = Stripe('pk_test_51SILe03qtuCBcLK9UolsUaqRqkBRCNnp8kLgzB6Yo8L02WTF6fVG0coxlbml5e0MALr9UnBcEWcfRT9sI7aLXSTO00R6q5Cvu9');
+        
+        // Make Stripe available globally
+        window.stripe = stripe;
+    </script>
+    <script src="js/payment-integration.js"></script>
+    
+    <!-- Enhanced Styles -->
+    <link rel="stylesheet" href="css/enhanced-styles.css">
+    
+    <style>
+        /* Appointment Confirmation Modal */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .confirmation-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .confirmation-header {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .confirmation-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: bounce 0.6s ease;
+        }
+        
+        .confirmation-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+        
+        .confirmation-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+        
+        .confirmation-body {
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .appointment-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .detail-value {
+            color: #212529;
+            text-align: right;
+        }
+        
+        .confirmation-actions {
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+        
+        .btn-confirm {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        @media (max-width: 600px) {
+            .confirmation-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .confirmation-header {
+                padding: 20px 15px;
+            }
+            
+            .confirmation-icon {
+                font-size: 3rem;
+            }
+            
+            .confirmation-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    
+    <script src="js/main.js"></script>
+    
+    <style>
+        /* ===== CSS CUSTOM PROPERTIES ===== */
+        :root {
+            /* Colors */
+            --primary-color: #ff69b4;
+            --secondary-color: #000000;
+            --accent-color: #ff1493;
+            --text-dark: #2c3e50;
+            --text-light: #ffffff;
+            --text-muted: #666666;
+            --background-light: #ffffff;
+            --background-dark: #f8f9fa;
+            --border-color: #e9ecef;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+            
+            /* Status Colors */
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --error-color: #dc3545;
+            --info-color: #17a2b8;
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-xxl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            
+            /* Typography */
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-xxl: 1.5rem;
+            --font-size-xxxl: 2rem;
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-base: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--background-light);
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            padding: 8px;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            z-index: 1000;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: var(--spacing-md);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: var(--font-size-xxxl);
+        }
+
+        h2 {
+            font-size: var(--font-size-xxl);
+        }
+
+        h3 {
+            font-size: var(--font-size-xl);
+        }
+
+        h4 {
+            font-size: var(--font-size-lg);
+        }
+
+        h5, h6 {
+            font-size: var(--font-size-base);
+        }
+
+        p {
+            margin-bottom: var(--spacing-md);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        a:hover, a:focus {
+            color: var(--secondary-color);
+            text-decoration: underline;
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .main {
+            min-height: calc(100vh - 200px);
+            padding: var(--spacing-xl) 0;
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        .header {
+            background: var(--background-light);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+        }
+
+        .logo {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .logo i {
+            font-size: var(--font-size-xxl);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: var(--font-size-xl);
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .nav-toggle:hover, .nav-toggle:focus {
+            background: var(--background-dark);
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            color: var(--text-dark);
+        }
+
+        .nav-link:hover, .nav-link:focus {
+            background: rgba(255, 105, 180, 0.1);
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-link.active {
+            background: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: var(--font-size-base);
+            line-height: 1;
+        }
+
+        .btn:hover, .btn:focus {
+            background: var(--secondary-color);
+            color: var(--text-light);
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover, .btn-secondary:focus {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border-color: var(--primary-color);
+        }
+
+        .btn-large {
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: var(--font-size-lg);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--background-light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-base);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        /* ===== GRID SYSTEM ===== */
+        .grid {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--text-dark);
+            color: var(--text-light);
+            padding: var(--spacing-xl) 0 var(--spacing-lg);
+            margin-top: var(--spacing-xxl);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .footer-link:hover, .footer-link:focus {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: var(--spacing-lg);
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .text-center {
+            text-align: center;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            background: linear-gradient(135deg, #ff69b4, #ff1493, #e91e63, #ad1457);
+            color: var(--text-light);
+            padding: var(--spacing-xxl) 0;
+            text-align: center;
+            margin-bottom: var(--spacing-xxl);
+        }
+
+        .page-description {
+            font-size: var(--font-size-lg);
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* ===== BOOKING PAGE STYLES ===== */
+        .booking-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            transition: border-color var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+        }
+
+        .form-input:invalid {
+            border-color: var(--error-color);
+        }
+
+        .form-input:valid {
+            border-color: var(--success-color);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            background: var(--background-light);
+            cursor: pointer;
+            transition: border-color var(--transition-fast);
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family);
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color var(--transition-fast);
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+
+        .checkbox-label {
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-xl);
+        }
+
+        .booking-summary {
+            background: var(--background-dark);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: var(--font-size-lg);
+            color: var(--primary-color);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .calendar-day {
+            padding: var(--spacing-md);
+            text-align: center;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: 1px solid transparent;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+        
+        .calendar-day.current-month {
+            background: var(--background-light);
+            border-color: var(--border-color);
+        }
+        
+        .calendar-day.available {
+            background: var(--background-light);
+            color: var(--text-dark);
+        }
+        
+        .calendar-day.available:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .calendar-day.selected {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(255, 105, 180, 0.3);
+        }
+        
+        .calendar-day.disabled {
+            background: var(--background-dark);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .calendar-day.other-month {
+            background: transparent;
+            color: var(--text-muted);
+            opacity: 0.3;
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .time-slot {
+            padding: var(--spacing-sm);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            background: var(--background-light);
+        }
+
+        .time-slot:hover {
+            border-color: var(--primary-color);
+            background: rgba(255, 105, 180, 0.1);
+        }
+
+        .time-slot.selected {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border-color: var(--primary-color);
+        }
+
+        .time-slot.unavailable {
+            background: var(--background-dark);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-xs);
+        }
+
+        .success-message {
+            color: var(--success-color);
+            font-size: var(--font-size-sm);
+            margin-top: var(--spacing-xs);
+        }
+
+        .progress-bar {
+            background: var(--background-dark);
+            border-radius: var(--radius-lg);
+            height: 8px;
+            margin-bottom: var(--spacing-xl);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #ff69b4, #ff1493, #e91e63);
+            height: 100%;
+            transition: width var(--transition-slow);
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--background-light);
+                box-shadow: var(--shadow-md);
+                padding: var(--spacing-md);
+            }
+            
+            .nav-menu.active {
+                display: block;
+            }
+            
+            .nav-list {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                align-items: stretch;
+            }
+            
+            .nav-link {
+                padding: var(--spacing-md);
+                text-align: center;
+                border-radius: var(--radius-md);
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('booking-form');
+            const steps = document.querySelectorAll('.booking-step');
+            const stepIndicators = document.querySelectorAll('.step');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            let currentStep = 1;
+            const totalSteps = 4;
+            
+            // Initialize calendar
+            initCalendar();
+            
+            // Service data
+            const services = {
+                'classic-manicure': { name: 'Classic Manicure', price: 35, duration: '60 minutes' },
+                'gel-manicure': { name: 'Premium Gel Design', price: 50, duration: '75-90 minutes' },
+                'french-manicure': { name: 'French Manicure', price: 40, duration: '70 minutes' },
+                'nail-art': { name: 'Creative Nail Art Design', price: 55, duration: '90-120 minutes' },
+                'extensions': { name: 'Acrylic Extensions', price: 85, duration: '120-150 minutes' },
+                '3d-nail-art': { name: '3D Nail Art', price: 75, duration: '120 minutes' }
+            };
+            
+            // Initialize form
+            initBookingForm();
+            
+            function initBookingForm() {
+                // Service selection
+                const serviceOptions = document.querySelectorAll('.service-option');
+                serviceOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const serviceId = this.getAttribute('data-service');
+                        const radio = this.querySelector('input[type="radio"]');
+                        
+                        // Remove previous selection
+                        serviceOptions.forEach(opt => opt.classList.remove('selected'));
+                        document.querySelectorAll('input[name="service"]').forEach(input => input.checked = false);
+                        
+                        // Add current selection
+                        this.classList.add('selected');
+                        radio.checked = true;
+                        
+                        // Update step indicator
+                        updateStepIndicator(1, true);
+                    });
+                    
+                    // Keyboard support
+                    option.addEventListener('keydown', function(event) {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            this.click();
+                        }
+                    });
+                });
+                
+                // Navigation buttons
+                nextBtn.addEventListener('click', nextStep);
+                prevBtn.addEventListener('click', prevStep);
+                
+                // Form submission
+                form.addEventListener('submit', handleFormSubmission);
+            }
+            
+            function nextStep() {
+                if (validateCurrentStep()) {
+                    if (currentStep < totalSteps) {
+                        currentStep++;
+                        showStep(currentStep);
+                        updateNavigation();
+                        updateStepIndicator(currentStep - 1, true);
+                        updateStepIndicator(currentStep, true);
+                        
+                        // Update summary if on confirmation step
+                        if (currentStep === 4) {
+                            updateAppointmentSummary();
+                        }
+                    }
+                }
+            }
+            
+            function prevStep() {
+                if (currentStep > 1) {
+                    currentStep--;
+                    showStep(currentStep);
+                    updateNavigation();
+                    updateStepIndicator(currentStep + 1, false);
+                    updateStepIndicator(currentStep, true);
+                }
+            }
+            
+            function showStep(stepNumber) {
+                steps.forEach((step, index) => {
+                    if (index + 1 === stepNumber) {
+                        step.style.display = 'block';
+                        step.setAttribute('aria-hidden', 'false');
+                    } else {
+                        step.style.display = 'none';
+                        step.setAttribute('aria-hidden', 'true');
+                    }
+                });
+            }
+            
+            function updateNavigation() {
+                prevBtn.style.display = currentStep > 1 ? 'block' : 'none';
+                
+                if (currentStep < totalSteps) {
+                    nextBtn.style.display = 'block';
+                    submitBtn.style.display = 'none';
+                } else {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                }
+            }
+            
+            function updateStepIndicator(stepNumber, completed) {
+                const indicator = document.querySelector(`[data-step="${stepNumber}"]`);
+                if (indicator) {
+                    if (completed && stepNumber < currentStep) {
+                        indicator.classList.add('completed');
+                        indicator.classList.remove('active');
+                    } else if (stepNumber === currentStep) {
+                        indicator.classList.add('active');
+                        indicator.classList.remove('completed');
+                    } else {
+                        indicator.classList.remove('active', 'completed');
+                    }
+                }
+            }
+            
+            function validateCurrentStep() {
+                switch (currentStep) {
+                    case 1:
+                        return document.querySelector('input[name="service"]:checked') !== null;
+                    case 2:
+                        return document.getElementById('appointment-date').value && 
+                               document.getElementById('appointment-time').value;
+                    case 3:
+                        return validatePersonalDetails();
+                    case 4:
+                        return document.querySelector('input[name="terms"]').checked;
+                    default:
+                        return true;
+                }
+            }
+            
+            function validatePersonalDetails() {
+                const requiredFields = ['first-name', 'last-name', 'email', 'phone'];
+                return requiredFields.every(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    return field.value.trim() !== '';
+                });
+            }
+            
+            function updateAppointmentSummary() {
+                const selectedService = document.querySelector('input[name="service"]:checked').value;
+                const serviceData = services[selectedService];
+                
+                document.getElementById('summary-service').textContent = serviceData.name;
+                document.getElementById('summary-date').textContent = formatDate(document.getElementById('appointment-date').value);
+                document.getElementById('summary-time').textContent = formatTime(document.getElementById('appointment-time').value);
+                document.getElementById('summary-duration').textContent = serviceData.duration;
+                document.getElementById('summary-price').textContent = `$${serviceData.price}`;
+                document.getElementById('summary-client').textContent = 
+                    `${document.getElementById('first-name').value} ${document.getElementById('last-name').value}`;
+                document.getElementById('summary-contact').textContent = 
+                    `${document.getElementById('email').value} | ${document.getElementById('phone').value}`;
+            }
+            
+            async function handleFormSubmission(event) {
+                event.preventDefault();
+                
+                if (validateCurrentStep()) {
+                    // Show loading state
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Processing...';
+                    submitBtn.disabled = true;
+                    
+                    // Collect form data
+                    const selectedService = document.querySelector('input[name="service"]:checked').value;
+                    const serviceData = services[selectedService];
+                    
+                    const appointmentData = {
+                        service: serviceData.name,
+                        serviceId: selectedService,
+                        price: serviceData.price,
+                        duration: serviceData.duration,
+                        appointmentDate: document.getElementById('appointment-date').value,
+                        appointmentTime: document.getElementById('appointment-time').value,
+                        firstName: document.getElementById('first-name').value,
+                        lastName: document.getElementById('last-name').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                        notes: document.getElementById('notes').value,
+                        newsletter: document.querySelector('input[name="newsletter"]').checked,
+                        location: 'studio', // Home studio
+                        clientAddress: document.getElementById('client-address').value
+                    };
+                    
+                    // Store appointment data for payment
+                    window.currentAppointmentData = appointmentData;
+                    
+                    // Show payment options
+                    if (window.PaymentIntegration) {
+                        window.PaymentIntegration.showPaymentOptions(appointmentData);
+                    } else {
+                        // Fallback to direct save if payment not available
+                        try {
+                            const result = await window.FirebaseAppointments.saveAppointment(appointmentData);
+                            
+                            if (result.success) {
+                                // Show confirmation modal with appointment details
+                                showConfirmationModal(appointmentData);
+                                
+                                // Scroll to top
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            } else {
+                                throw new Error(result.error);
+                            }
+                        } catch (error) {
+                            console.error('Error booking appointment:', error);
+                            if (window.showAlert) {
+                                window.showAlert('There was an error booking your appointment. Please try again.', 'error');
+                            }
+                            
+                            // Reset button
+                            submitBtn.innerHTML = '<i class="fas fa-calendar-check" aria-hidden="true"></i> Confirm Booking';
+                            submitBtn.disabled = false;
+                        }
+                    }
+                }
+            }
+            
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+            
+            function formatTime(timeString) {
+                const [hours, minutes] = timeString.split(':');
+                const hour = parseInt(hours);
+                const ampm = hour >= 12 ? 'PM' : 'AM';
+                const displayHour = hour % 12 || 12;
+                return `${displayHour}:${minutes} ${ampm}`;
+            }
+            
+            // Calendar functionality
+            function initCalendar() {
+                const calendarGrid = document.querySelector('.calendar-grid');
+                const monthDisplay = document.querySelector('.calendar-month');
+                const prevBtn = document.querySelector('.calendar-nav.prev');
+                const nextBtn = document.querySelector('.calendar-nav.next');
+                
+                let currentDate = new Date();
+                let currentMonth = currentDate.getMonth();
+                let currentYear = currentDate.getFullYear();
+                
+                function generateCalendar() {
+                    calendarGrid.innerHTML = '';
+                    
+                    const firstDay = new Date(currentYear, currentMonth, 1);
+                    const lastDay = new Date(currentYear, currentMonth + 1, 0);
+                    const startDate = new Date(firstDay);
+                    startDate.setDate(startDate.getDate() - firstDay.getDay());
+                    
+                    // Month display
+                    monthDisplay.textContent = firstDay.toLocaleDateString('en-US', { 
+                        month: 'long', 
+                        year: 'numeric' 
+                    });
+                    
+                    // Generate calendar days
+                    for (let i = 0; i < 42; i++) {
+                        const date = new Date(startDate);
+                        date.setDate(startDate.getDate() + i);
+                        
+                        const dayElement = document.createElement('div');
+                        dayElement.className = 'calendar-day';
+                        dayElement.textContent = date.getDate();
+                        
+                        // Check if date is in current month
+                        if (date.getMonth() === currentMonth) {
+                            dayElement.classList.add('current-month');
+                            
+                            // Check if date is available (not in past)
+                            const today = new Date();
+                            today.setHours(0, 0, 0, 0);
+                            
+                            if (date >= today) {
+                                dayElement.classList.add('available');
+                                dayElement.addEventListener('click', function() {
+                                    selectDate(dayElement, date);
+                                });
+                            } else {
+                                dayElement.classList.add('disabled');
+                            }
+                        } else {
+                            dayElement.classList.add('other-month');
+                        }
+                        
+                        calendarGrid.appendChild(dayElement);
+                    }
+                }
+                
+                function selectDate(dayElement, date) {
+                    // Remove previous selection
+                    const previousSelected = document.querySelector('.calendar-day.selected');
+                    if (previousSelected) {
+                        previousSelected.classList.remove('selected');
+                    }
+                    
+                    // Add selection to clicked day
+                    dayElement.classList.add('selected');
+                    
+                    // Update hidden input
+                    const dateInput = document.getElementById('appointment-date');
+                    const formattedDate = date.toISOString().split('T')[0];
+                    dateInput.value = formattedDate;
+                    
+                    // Generate time slots
+                    generateTimeSlots();
+                }
+                
+                function generateTimeSlots() {
+                    const timeSlotsContainer = document.querySelector('.time-slots');
+                    if (!timeSlotsContainer) return;
+                    
+                    timeSlotsContainer.innerHTML = '';
+                    
+                    const timeSlots = [
+                        '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+                        '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
+                        '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'
+                    ];
+                    
+                    timeSlots.forEach(time => {
+                        const slotElement = document.createElement('div');
+                        slotElement.className = 'time-slot available';
+                        slotElement.textContent = formatTime(time);
+                        slotElement.setAttribute('data-time', time);
+                        
+                        slotElement.addEventListener('click', function() {
+                            selectTimeSlot(slotElement, time);
+                        });
+                        
+                        timeSlotsContainer.appendChild(slotElement);
+                    });
+                }
+                
+                function selectTimeSlot(slotElement, time) {
+                    // Remove previous selection
+                    const previousSelected = document.querySelector('.time-slot.selected');
+                    if (previousSelected) {
+                        previousSelected.classList.remove('selected');
+                    }
+                    
+                    // Add selection to clicked slot
+                    slotElement.classList.add('selected');
+                    
+                    // Update hidden input
+                    const timeInput = document.getElementById('appointment-time');
+                    timeInput.value = time;
+                }
+                
+                // Navigation
+                prevBtn.addEventListener('click', function() {
+                    currentMonth--;
+                    if (currentMonth < 0) {
+                        currentMonth = 11;
+                        currentYear--;
+                    }
+                    generateCalendar();
+                });
+                
+                nextBtn.addEventListener('click', function() {
+                    currentMonth++;
+                    if (currentMonth > 11) {
+                        currentMonth = 0;
+                        currentYear++;
+                    }
+                    generateCalendar();
+                });
+                
+                // Initialize calendar
+                generateCalendar();
+            }
+        });
+    </script>
+    
+    <!-- Appointment Confirmation Modal -->
+    <div id="confirmation-modal" class="confirmation-modal">
+        <div class="confirmation-content">
+            <div class="confirmation-header">
+                <div class="confirmation-icon">✅</div>
+                <h2 class="confirmation-title">Appointment Booked!</h2>
+                <p class="confirmation-subtitle">Your booking has been confirmed</p>
+            </div>
+            
+            <div class="confirmation-body">
+                <p style="margin: 0 0 20px 0; color: #666; font-size: 1.1rem;">
+                    Thank you for choosing <strong style="color: #ff69b4;">Nails By Sau</strong>!
+                </p>
+                
+                <div class="appointment-details" id="appointment-details">
+                    <!-- Appointment details will be populated here -->
+                </div>
+                
+                <p style="margin: 20px 0 0 0; color: #666; font-size: 0.95rem;">
+                    📧 A confirmation email has been sent to you<br>
+                    📱 We'll also send a reminder 24 hours before your appointment
+                </p>
+            </div>
+            
+            <div class="confirmation-actions">
+                <button class="btn-confirm" onclick="closeConfirmationModal()">
+                    <i class="fas fa-check"></i> Perfect!
+                </button>
+                <button class="btn-secondary" onclick="bookAnother()">
+                    <i class="fas fa-plus"></i> Book Another
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Show appointment confirmation modal
+        function showConfirmationModal(appointmentData) {
+            const modal = document.getElementById('confirmation-modal');
+            const detailsContainer = document.getElementById('appointment-details');
+            
+            // Format appointment details
+            const details = `
+                <div class="detail-row">
+                    <span class="detail-label">Service:</span>
+                    <span class="detail-value">${appointmentData.service}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date:</span>
+                    <span class="detail-value">${new Date(appointmentData.appointmentDate).toLocaleDateString('en-CA', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Time:</span>
+                    <span class="detail-value">${appointmentData.appointmentTime}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Duration:</span>
+                    <span class="detail-value">${appointmentData.duration} minutes</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Client:</span>
+                    <span class="detail-value">${appointmentData.firstName} ${appointmentData.lastName}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total:</span>
+                    <span class="detail-value" style="font-weight: 700; color: #ff69b4;">$${appointmentData.price}</span>
+                </div>
+            `;
+            
+            detailsContainer.innerHTML = details;
+            modal.style.display = 'block';
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+            
+            // Auto-close after 10 seconds (optional)
+            setTimeout(() => {
+                if (modal.style.display === 'block') {
+                    closeConfirmationModal();
+                }
+            }, 10000);
+        }
+        
+        // Close confirmation modal
+        function closeConfirmationModal() {
+            const modal = document.getElementById('confirmation-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Reset form
+            document.getElementById('booking-form').reset();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Book another appointment
+        function bookAnother() {
+            closeConfirmationModal();
+            
+            // Scroll to service selection
+            document.getElementById('service-selection').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('confirmation-modal');
+            if (event.target === modal) {
+                closeConfirmationModal();
+            }
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('confirmation-modal');
+                if (modal.style.display === 'block') {
+                    closeConfirmationModal();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+

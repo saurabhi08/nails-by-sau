@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin dashboard for Nail's By Sau - Manage appointments, services, and business operations.">
+    <meta name="keywords" content="admin dashboard, appointment management, service management, business dashboard">
+    <meta name="author" content="Nail's By Sau">
+    <title>Admin Dashboard - Nail's By Sau</title>
+    
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="preload" href="js/main.js" as="script">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <header class="header" role="banner">
+        <div class="header-content">
+            <a href="index.html" class="logo" aria-label="Nail's By Sau - Home">
+                <i class="fas fa-paint-brush" aria-hidden="true"></i>
+                Nail's By Sau
+            </a>
+            
+            <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Open navigation menu">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+            
+            <nav class="nav-menu" id="nav-menu" role="navigation" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="services.html" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="book-appointment.html" class="nav-link">Book Appointment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="my-account.html" class="nav-link">My Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="admin-dashboard.html" class="nav-link active" aria-current="page">Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main id="main-content" class="main" role="main">
+        <section class="page-header" aria-labelledby="page-heading">
+            <div class="container">
+                <h1 id="page-heading">Admin Dashboard</h1>
+                <p class="page-description">Manage your business operations, appointments, and services from this comprehensive dashboard.</p>
+            </div>
+        </section>
+        
+        <section class="container" id="admin-login-section" aria-labelledby="admin-login-heading">
+            <div class="card">
+                <h2 id="admin-login-heading">Admin Login</h2>
+                <form class="admin-login-form" id="admin-login-form" novalidate>
+                    <div class="form-group">
+                        <label for="admin-email" class="form-label">Email Address *</label>
+                        <input type="email" id="admin-email" name="email" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="admin-password" class="form-label">Password *</label>
+                        <div class="password-input">
+                            <input type="password" id="admin-password" name="password" class="form-input" required>
+                            <button type="button" class="password-toggle" aria-label="Show password">
+                                <i class="fas fa-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-large">
+                            <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                            Login to Dashboard
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        
+        <section class="container" id="admin-dashboard-section" aria-labelledby="dashboard-heading" style="display: none;">
+            <div class="dashboard-header">
+                <h2 id="dashboard-heading">Welcome back, Admin!</h2>
+                <div class="dashboard-actions">
+                    <button type="button" class="btn btn-secondary" id="export-data-btn">
+                        <i class="fas fa-download" aria-hidden="true"></i>
+                        Export Data
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="logout-admin-btn">
+                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-appointments">0</div>
+                    <div class="stat-label">Total Appointments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="today-appointments">0</div>
+                    <div class="stat-label">Today's Appointments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="monthly-revenue">$0</div>
+                    <div class="stat-label">Monthly Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="active-services">0</div>
+                    <div class="stat-label">Active Services</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" data-tab="appointments" aria-selected="true" aria-controls="appointments-panel">
+                    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                    Appointments
+                </button>
+                <button class="tab-btn" data-tab="messages" aria-selected="false" aria-controls="messages-panel">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    Messages
+                </button>
+                <button class="tab-btn" data-tab="services" aria-selected="false" aria-controls="services-panel">
+                    <i class="fas fa-list" aria-hidden="true"></i>
+                    Services
+                </button>
+                <button class="tab-btn" data-tab="availability" aria-selected="false" aria-controls="availability-panel">
+                    <i class="fas fa-clock" aria-hidden="true"></i>
+                    Availability
+                </button>
+                <button class="tab-btn" data-tab="reports" aria-selected="false" aria-controls="reports-panel">
+                    <i class="fas fa-chart-bar" aria-hidden="true"></i>
+                    Reports
+                </button>
+            </div>
+            
+            <div class="dashboard-panel" id="appointments-panel" aria-labelledby="appointments-heading">
+                <div class="panel-header">
+                    <h3 id="appointments-heading">Appointment Management</h3>
+                    <div class="panel-actions">
+                        <div class="filter-controls">
+                            <select id="appointment-filter" class="form-select">
+                                <option value="all">All Appointments</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn" id="add-appointment-btn">
+                            <i class="fas fa-plus" aria-hidden="true"></i>
+                            Add Appointment
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="table" id="appointments-table">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Service</th>
+                                <th>Date & Time</th>
+                                <th>Duration</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointments-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="dashboard-panel" id="services-panel" aria-labelledby="services-heading" style="display: none;">
+                <div class="panel-header">
+                    <h3 id="services-heading">Service Management</h3>
+                    <button type="button" class="btn" id="add-service-btn">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                        Add Service
+                    </button>
+                </div>
+                
+                <div class="services-grid">
+                </div>
+            </div>
+            
+            <div class="dashboard-panel" id="availability-panel" aria-labelledby="availability-heading" style="display: none;">
+                <div class="panel-header">
+                    <h3 id="availability-heading">Availability Management</h3>
+                    <button type="button" class="btn" id="set-availability-btn">
+                        <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                        Set Availability
+                    </button>
+                </div>
+                
+                <div class="availability-calendar">
+                </div>
+            </div>
+            
+            <div class="dashboard-panel" id="reports-panel" aria-labelledby="reports-heading" style="display: none;">
+                <div class="panel-header">
+                    <h3 id="reports-heading">Business Reports</h3>
+                    <div class="panel-actions">
+                        <select id="report-period" class="form-select">
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="year">This Year</option>
+                        </select>
+                        <button type="button" class="btn" id="generate-report-btn">
+                            <i class="fas fa-chart-line" aria-hidden="true"></i>
+                            Generate Report
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="reports-content">
+                    <div class="report-cards">
+                        <div class="report-card">
+                            <h4>Revenue Summary</h4>
+                            <div class="report-value" id="revenue-summary">$0</div>
+                            <div class="report-change positive">+0%</div>
+                        </div>
+                        <div class="report-card">
+                            <h4>Appointment Volume</h4>
+                            <div class="report-value" id="appointment-volume">0</div>
+                            <div class="report-change positive">+0%</div>
+                        </div>
+                        <div class="report-card">
+                            <h4>Average Service Time</h4>
+                            <div class="report-value" id="avg-service-time">0 min</div>
+                            <div class="report-change negative">-0%</div>
+                        </div>
+                        <div class="report-card">
+                            <h4>Client Satisfaction</h4>
+                            <div class="report-value" id="client-satisfaction">0%</div>
+                            <div class="report-change positive">+0%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="revenue-chart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="services.html" class="footer-link">Services</a>
+                <a href="book-appointment.html" class="footer-link">Book Appointment</a>
+                <a href="contact.html" class="footer-link">Contact</a>
+                <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms-of-service.html" class="footer-link">Terms of Service</a>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Nail's By Sau. All rights reserved.</p>
+                <p>Professional nail artistry services with online booking convenience.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-auth.js"></script>
+    <script src="js/firebase-appointments.js"></script>
+    <script src="js/firebase-services.js"></script>
+    <script src="js/firebase-stats.js"></script>
+    <script src="js/firebase-messages.js"></script>
+    <script src="js/firebase-init.js"></script>
+    
+    <script src="js/main.js"></script>
+    
+    <style>
+        /* ===== CSS CUSTOM PROPERTIES ===== */
+        :root {
+            /* Colors */
+            --primary-color: #ff69b4;
+            --secondary-color: #000000;
+            --accent-color: #ff1493;
+            --text-dark: #2c3e50;
+            --text-light: #ffffff;
+            --text-muted: #666666;
+            --background-light: #ffffff;
+            --background-dark: #f8f9fa;
+            --border-color: #e9ecef;
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+            
+            /* Status Colors */
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --error-color: #dc3545;
+            --info-color: #17a2b8;
+            
+            /* Spacing */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-xxl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            
+            /* Typography */
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-xxl: 1.5rem;
+            --font-size-xxxl: 2rem;
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-base: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--background-light);
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            padding: 8px;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            z-index: 1000;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            margin-bottom: var(--spacing-md);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: var(--font-size-xxxl);
+        }
+
+        h2 {
+            font-size: var(--font-size-xxl);
+        }
+
+        h3 {
+            font-size: var(--font-size-xl);
+        }
+
+        h4 {
+            font-size: var(--font-size-lg);
+        }
+
+        h5, h6 {
+            font-size: var(--font-size-base);
+        }
+
+        p {
+            margin-bottom: var(--spacing-md);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        a:hover, a:focus {
+            color: var(--secondary-color);
+            text-decoration: underline;
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .main {
+            min-height: calc(100vh - 200px);
+            padding: var(--spacing-xl) 0;
+        }
+
+        /* ===== HEADER & NAVIGATION ===== */
+        .header {
+            background: var(--background-light);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+        }
+
+        .logo {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .logo i {
+            font-size: var(--font-size-xxl);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: var(--font-size-xl);
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .nav-toggle:hover, .nav-toggle:focus {
+            background: var(--background-dark);
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            color: var(--text-dark);
+        }
+
+        .nav-link:hover, .nav-link:focus {
+            background: rgba(255, 105, 180, 0.1);
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-link.active {
+            background: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: var(--font-size-base);
+            line-height: 1;
+        }
+
+        .btn:hover, .btn:focus {
+            background: var(--secondary-color);
+            color: var(--text-light);
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover, .btn-secondary:focus {
+            background: var(--primary-color);
+            color: var(--text-light);
+            border-color: var(--primary-color);
+        }
+
+        .btn-large {
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: var(--font-size-lg);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--background-light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-base);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        /* ===== GRID SYSTEM ===== */
+        .grid {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--text-dark);
+            color: var(--text-light);
+            padding: var(--spacing-xl) 0 var(--spacing-lg);
+            margin-top: var(--spacing-xxl);
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        .footer-link:hover, .footer-link:focus {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: var(--spacing-lg);
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .text-center {
+            text-align: center;
+        }
+
+        /* ===== ADMIN DASHBOARD STYLES ===== */
+        .admin-login {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+
+        .admin-dashboard {
+            display: none;
+        }
+
+        .admin-dashboard.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #ff69b4, #ff1493, #e91e63, #ad1457);
+            color: var(--text-light);
+            padding: var(--spacing-xl) 0;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .stat-card {
+            background: var(--background-light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-number {
+            font-size: var(--font-size-xxxl);
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: var(--font-size-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+        }
+
+        .dashboard-section {
+            background: var(--background-light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: var(--font-size-xl);
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .appointment-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .appointment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-sm);
+            background: var(--background-light);
+        }
+
+        .appointment-info {
+            flex: 1;
+        }
+
+        .appointment-customer {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .appointment-details {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+        }
+
+        .appointment-status {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-confirmed {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status-cancelled {
+            background: rgba(220, 53, 69, 0.1);
+            color: var(--error-color);
+        }
+
+        .appointment-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-sm {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            font-size: var(--font-size-xs);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+        }
+
+        .btn-danger {
+            background: var(--error-color);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            transition: border-color var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+        }
+
+        .form-input:invalid {
+            border-color: var(--error-color);
+        }
+
+        .form-input:valid {
+            border-color: var(--success-color);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            background: var(--background-light);
+            cursor: pointer;
+            transition: border-color var(--transition-fast);
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-xl);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--background-light);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: var(--font-size-xl);
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: var(--font-size-xl);
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:hover, .modal-close:focus {
+            background: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        .modal-body {
+            padding: var(--spacing-xl);
+        }
+
+        .availability-form-grid {
+            display: grid;
+            gap: var(--spacing-lg);
+        }
+
+        .day-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--spacing-sm);
+        }
+
+        .day-checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .day-checkboxes input[type="checkbox"] {
+            margin: 0;
+        }
+
+        .time-inputs {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .time-inputs span {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .availability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .availability-day {
+            background: var(--background-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+        }
+
+        .availability-day h5 {
+            margin: 0 0 var(--spacing-md) 0;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .time-slots {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .time-slot {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-sm);
+            text-align: center;
+            background: var(--success-color);
+            color: white;
+        }
+
+        .time-slot.unavailable {
+            background: var(--error-color);
+        }
+
+        .time-slot.break {
+            background: var(--warning-color);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--background-light);
+                box-shadow: var(--shadow-md);
+                padding: var(--spacing-md);
+            }
+            
+            .nav-menu.active {
+                display: block;
+            }
+            
+            .nav-list {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                align-items: stretch;
+            }
+            
+            .nav-link {
+                padding: var(--spacing-md);
+                text-align: center;
+                border-radius: var(--radius-md);
+            }
+            
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .form-actions .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .appointment-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-sm);
+            }
+            
+            .appointment-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+    
+    <script>
+        // Simple alert function for admin dashboard
+        window.showAlert = function(message, type) {
+            alert(message);
+        };
+
+        // Test function to verify login works
+        window.testLogin = function() {
+            console.log('Testing login...');
+            handleAdminLogin();
+        };
+
+        // Availability management functions
+        function showAvailabilityModal() {
+            // Create modal if it doesn't exist
+            let modal = document.getElementById('availability-modal');
+            if (!modal) {
+                modal = createAvailabilityModal();
+            }
+            modal.classList.add('active');
+        }
+
+        function createAvailabilityModal() {
+            const modal = document.createElement('div');
+            modal.id = 'availability-modal';
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Set Your Availability</h3>
+                        <button class="modal-close" onclick="closeAvailabilityModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="availability-form">
+                            <div class="availability-form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Select Date Range</label>
+                                    <input type="date" id="start-date" class="form-input" required>
+                                    <input type="date" id="end-date" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Available Days</label>
+                                    <div class="day-checkboxes">
+                                        <label><input type="checkbox" name="days" value="monday" checked> Monday</label>
+                                        <label><input type="checkbox" name="days" value="tuesday" checked> Tuesday</label>
+                                        <label><input type="checkbox" name="days" value="wednesday" checked> Wednesday</label>
+                                        <label><input type="checkbox" name="days" value="thursday" checked> Thursday</label>
+                                        <label><input type="checkbox" name="days" value="friday" checked> Friday</label>
+                                        <label><input type="checkbox" name="days" value="saturday" checked> Saturday</label>
+                                        <label><input type="checkbox" name="days" value="sunday"> Sunday</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Working Hours</label>
+                                    <div class="time-inputs">
+                                        <input type="time" id="start-time" class="form-input" value="09:00" required>
+                                        <span>to</span>
+                                        <input type="time" id="end-time" class="form-input" value="17:00" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Break Time (optional)</label>
+                                    <div class="time-inputs">
+                                        <input type="time" id="break-start" class="form-input" value="12:00">
+                                        <span>to</span>
+                                        <input type="time" id="break-end" class="form-input" value="13:00">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Appointment Duration</label>
+                                    <select id="appointment-duration" class="form-select" required>
+                                        <option value="60">60 minutes</option>
+                                        <option value="90">90 minutes</option>
+                                        <option value="120">120 minutes</option>
+                                        <option value="30">30 minutes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="closeAvailabilityModal()">Cancel</button>
+                                <button type="submit" class="btn">Save Availability</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add form submit handler
+            modal.querySelector('#availability-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                saveAvailability();
+            });
+            
+            return modal;
+        }
+
+        function saveAvailability() {
+            const formData = {
+                startDate: document.getElementById('start-date').value,
+                endDate: document.getElementById('end-date').value,
+                days: Array.from(document.querySelectorAll('input[name="days"]:checked')).map(cb => cb.value),
+                startTime: document.getElementById('start-time').value,
+                endTime: document.getElementById('end-time').value,
+                breakStart: document.getElementById('break-start').value,
+                breakEnd: document.getElementById('break-end').value,
+                duration: document.getElementById('appointment-duration').value
+            };
+            
+            console.log('Saving availability:', formData);
+            
+            if (window.showAlert) {
+                window.showAlert('Availability settings saved successfully!', 'success');
+            }
+            
+            closeAvailabilityModal();
+            loadAvailability(); // Refresh the availability display
+        }
+
+        function closeAvailabilityModal() {
+            const modal = document.getElementById('availability-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        // Make functions globally available
+        window.closeAvailabilityModal = closeAvailabilityModal;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize admin dashboard
+            initAdminLogin();
+            initDashboardTabs();
+            initPasswordToggle();
+            checkAdminAuth();
+        });
+        
+        function initAdminLogin() {
+            const loginForm = document.getElementById('admin-login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    handleAdminLogin();
+                });
+            }
+        }
+        
+        function initDashboardTabs() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const panels = document.querySelectorAll('.dashboard-panel');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Update tab buttons
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
+                    this.classList.add('active');
+                    this.setAttribute('aria-selected', 'true');
+                    
+                    // Show/hide panels
+                    panels.forEach(panel => {
+                        if (panel.id === targetTab + '-panel') {
+                            panel.style.display = 'block';
+                            panel.setAttribute('aria-hidden', 'false');
+                        } else {
+                            panel.style.display = 'none';
+                            panel.setAttribute('aria-hidden', 'true');
+                        }
+                    });
+                    
+                    // Load panel data
+                    loadPanelData(targetTab);
+                });
+            });
+        }
+        
+        function initPasswordToggle() {
+            const passwordToggle = document.querySelector('.password-toggle');
+            if (passwordToggle) {
+                passwordToggle.addEventListener('click', function() {
+                    const input = this.parentNode.querySelector('input');
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.className = 'fas fa-eye-slash';
+                        this.setAttribute('aria-label', 'Hide password');
+                    } else {
+                        input.type = 'password';
+                        icon.className = 'fas fa-eye';
+                        this.setAttribute('aria-label', 'Show password');
+                    }
+                });
+            }
+        }
+        
+        function checkAdminAuth() {
+            const isAdmin = localStorage.getItem('adminAuth');
+            if (isAdmin === 'true') {
+                showDashboard();
+            } else {
+                showLogin();
+            }
+        }
+        
+        async function handleAdminLogin() {
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            
+            console.log('Login attempt - Email:', email);
+            
+            try {
+                // Authenticate with Firebase
+                const result = await window.FirebaseAuth.signInAdmin(email, password);
+                
+                if (result.success) {
+                    showDashboard();
+                    
+                    if (window.showAlert) {
+                        window.showAlert('Admin login successful!', 'success');
+                    }
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                if (window.showAlert) {
+                    window.showAlert('Invalid admin credentials. Please try again.', 'error');
+                }
+            }
+        }
+        
+        function showLogin() {
+            document.getElementById('admin-login-section').style.display = 'block';
+            document.getElementById('admin-dashboard-section').style.display = 'none';
+        }
+        
+        function showDashboard() {
+            console.log('Showing dashboard...');
+            document.getElementById('admin-login-section').style.display = 'none';
+            document.getElementById('admin-dashboard-section').style.display = 'block';
+            
+            // Load dashboard data
+            loadDashboardData();
+            console.log('Dashboard loaded successfully');
+        }
+        
+        async function loadDashboardData() {
+            try {
+                // Get dashboard statistics from Firebase
+                const stats = await window.FirebaseStats.getDashboardStats();
+                
+                // Update stats
+                document.getElementById('total-appointments').textContent = stats.totalAppointments;
+                document.getElementById('today-appointments').textContent = stats.todayAppointments;
+                document.getElementById('monthly-revenue').textContent = `$${stats.monthlyRevenue}`;
+                document.getElementById('active-services').textContent = stats.activeServices;
+                
+                // Get appointments and services from Firebase
+                const [appointments, services] = await Promise.all([
+                    window.FirebaseAppointments.getAllAppointments(),
+                    window.FirebaseServices.getAllServices()
+                ]);
+                
+                // Store data for use in panels
+                window.adminData = {
+                    totalAppointments: stats.totalAppointments,
+                    todayAppointments: stats.todayAppointments,
+                    monthlyRevenue: stats.monthlyRevenue,
+                    activeServices: stats.activeServices,
+                    appointments: appointments,
+                    services: services
+                };
+                
+                // Load initial panel (appointments)
+                loadPanelData('appointments');
+                
+                console.log('Dashboard data loaded from Firebase');
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                if (window.showAlert) {
+                    window.showAlert('Error loading dashboard data. Please refresh the page.', 'error');
+                }
+            }
+        }
+        
+        function loadPanelData(panelName) {
+            switch (panelName) {
+                case 'appointments':
+                    loadAppointments();
+                    break;
+                case 'messages':
+                    loadMessages();
+                    break;
+                case 'services':
+                    loadServices();
+                    break;
+                case 'availability':
+                    loadAvailability();
+                    break;
+                case 'reports':
+                    loadReports();
+                    break;
+            }
+        }
+        
+        function loadAppointments() {
+            const tbody = document.getElementById('appointments-tbody');
+            const appointments = window.adminData.appointments || [];
+            
+            if (appointments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No appointments found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = appointments.map(appointment => {
+                const clientName = `${appointment.firstName || ''} ${appointment.lastName || ''}`.trim();
+                return `
+                    <tr>
+                        <td>${clientName || 'N/A'}</td>
+                        <td>${appointment.service || 'N/A'}</td>
+                        <td>${formatDate(appointment.appointmentDate)} at ${formatTime(appointment.appointmentTime)}</td>
+                        <td>${appointment.duration} min</td>
+                        <td>$${appointment.price}</td>
+                        <td><span class="status-badge status-${appointment.status}">${appointment.status}</span></td>
+                        <td>
+                            <button class="btn btn-secondary" onclick="editAppointment('${appointment.id}')">Edit</button>
+                            <button class="btn" onclick="cancelAppointment('${appointment.id}')">Cancel</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+        // Load messages
+        async function loadMessages() {
+            try {
+                const result = await window.FirebaseMessages.getAllMessages();
+                if (result.success) {
+                    displayMessages(result.messages);
+                } else {
+                    document.getElementById('messages-list').innerHTML = 
+                        '<div class="error">Error loading messages: ' + result.error + '</div>';
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                document.getElementById('messages-list').innerHTML = 
+                    '<div class="error">Error loading messages</div>';
+            }
+        }
+        
+        // Display messages
+        function displayMessages(messages) {
+            const container = document.getElementById('messages-list');
+            
+            if (messages.length === 0) {
+                container.innerHTML = '<div class="no-data">No messages yet</div>';
+                return;
+            }
+            
+            const messagesHTML = messages.map(message => {
+                const timestamp = message.timestamp ? 
+                    new Date(message.timestamp.seconds * 1000).toLocaleDateString('en-CA', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }) : 'Unknown';
+                
+                const statusClass = message.status === 'unread' ? 'unread' : 'read';
+                const repliedClass = message.replied ? 'replied' : '';
+                
+                return `
+                    <div class="message-item ${statusClass} ${repliedClass}">
+                        <div class="message-header">
+                            <div class="message-info">
+                                <h4>${message.name}</h4>
+                                <p class="message-email">${message.email}</p>
+                                ${message.phone ? `<p class="message-phone">${message.phone}</p>` : ''}
+                            </div>
+                            <div class="message-meta">
+                                <span class="message-time">${timestamp}</span>
+                                <span class="message-status">${message.status}</span>
+                                ${message.replied ? '<span class="replied-badge">Replied</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            <h5>${message.subject}</h5>
+                            <p>${message.message}</p>
+                        </div>
+                        <div class="message-actions">
+                            ${message.status === 'unread' ? 
+                                `<button class="btn btn-sm btn-secondary" onclick="markAsRead('${message.id}')">
+                                    <i class="fas fa-eye"></i> Mark as Read
+                                </button>` : ''
+                            }
+                            ${!message.replied ? 
+                                `<button class="btn btn-sm btn-primary" onclick="markAsReplied('${message.id}')">
+                                    <i class="fas fa-reply"></i> Mark as Replied
+                                </button>` : ''
+                            }
+                            <button class="btn btn-sm btn-danger" onclick="deleteMessage('${message.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = messagesHTML;
+        }
+        
+        // Mark message as read
+        async function markAsRead(messageId) {
+            try {
+                const result = await window.FirebaseMessages.markAsRead(messageId);
+                if (result.success) {
+                    loadMessages();
+                    if (window.showAlert) {
+                        window.showAlert('Message marked as read', 'success');
+                    }
+                }
+            } catch (error) {
+                console.error('Error marking message as read:', error);
+            }
+        }
+        
+        // Mark message as replied
+        async function markAsReplied(messageId) {
+            try {
+                const result = await window.FirebaseMessages.markAsReplied(messageId);
+                if (result.success) {
+                    loadMessages();
+                    if (window.showAlert) {
+                        window.showAlert('Message marked as replied', 'success');
+                    }
+                }
+            } catch (error) {
+                console.error('Error marking message as replied:', error);
+            }
+        }
+        
+        // Delete message
+        async function deleteMessage(messageId) {
+            if (confirm('Are you sure you want to delete this message?')) {
+                try {
+                    const result = await window.FirebaseMessages.deleteMessage(messageId);
+                    if (result.success) {
+                        loadMessages();
+                        if (window.showAlert) {
+                            window.showAlert('Message deleted successfully', 'success');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error deleting message:', error);
+                }
+            }
+        }
+        
+        function loadServices() {
+            const servicesGrid = document.querySelector('.services-grid');
+            const services = window.adminData.services || [];
+            
+            if (services.length === 0) {
+                servicesGrid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">No services found. Add some services to get started.</p>';
+                return;
+            }
+            
+            servicesGrid.innerHTML = services.map(service => `
+                <div class="service-card">
+                    <div class="service-header">
+                        <div>
+                            <h4 class="service-title">${service.name}</h4>
+                            <p>${service.description}</p>
+                        </div>
+                        <div class="service-price">$${service.price}</div>
+                    </div>
+                    <div class="service-details">
+                        <p><strong>Duration:</strong> ${service.duration} min</p>
+                        <p><strong>Status:</strong> ${service.active ? 'Active' : 'Inactive'}</p>
+                    </div>
+                    <div class="service-actions">
+                        <button class="btn btn-secondary" onclick="editService('${service.id}')">Edit</button>
+                        <button class="btn" onclick="deleteServiceConfirm('${service.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function loadAvailability() {
+            const availabilityCalendar = document.querySelector('.availability-calendar');
+            availabilityCalendar.innerHTML = `
+                <h4>Weekly Availability</h4>
+                <div class="availability-grid">
+                    <div class="availability-day">
+                        <h5>Monday</h5>
+                        <div class="time-slots">
+                            <span class="time-slot available">9:00 AM</span>
+                            <span class="time-slot available">10:00 AM</span>
+                            <span class="time-slot available">11:00 AM</span>
+                            <span class="time-slot available">1:00 PM</span>
+                            <span class="time-slot available">2:00 PM</span>
+                            <span class="time-slot available">3:00 PM</span>
+                            <span class="time-slot available">4:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="availability-day">
+                        <h5>Tuesday</h5>
+                        <div class="time-slots">
+                            <span class="time-slot available">9:00 AM</span>
+                            <span class="time-slot available">10:00 AM</span>
+                            <span class="time-slot available">11:00 AM</span>
+                            <span class="time-slot available">1:00 PM</span>
+                            <span class="time-slot available">2:00 PM</span>
+                            <span class="time-slot available">3:00 PM</span>
+                            <span class="time-slot available">4:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="availability-day">
+                        <h5>Wednesday</h5>
+                        <div class="time-slots">
+                            <span class="time-slot available">9:00 AM</span>
+                            <span class="time-slot available">10:00 AM</span>
+                            <span class="time-slot available">11:00 AM</span>
+                            <span class="time-slot available">1:00 PM</span>
+                            <span class="time-slot available">2:00 PM</span>
+                            <span class="time-slot available">3:00 PM</span>
+                            <span class="time-slot available">4:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="availability-day">
+                        <h5>Thursday</h5>
+                        <div class="time-slots">
+                            <span class="time-slot available">9:00 AM</span>
+                            <span class="time-slot available">10:00 AM</span>
+                            <span class="time-slot available">11:00 AM</span>
+                            <span class="time-slot available">1:00 PM</span>
+                            <span class="time-slot available">2:00 PM</span>
+                            <span class="time-slot available">3:00 PM</span>
+                            <span class="time-slot available">4:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="availability-day">
+                        <h5>Friday</h5>
+                        <div class="time-slots">
+                            <span class="time-slot available">9:00 AM</span>
+                            <span class="time-slot available">10:00 AM</span>
+                            <span class="time-slot available">11:00 AM</span>
+                            <span class="time-slot available">1:00 PM</span>
+                            <span class="time-slot available">2:00 PM</span>
+                            <span class="time-slot available">3:00 PM</span>
+                            <span class="time-slot available">4:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="availability-day">
+                        <h5>Saturday</h5>
+                        <div class="time-slots">
+                            <span class="time-slot available">10:00 AM</span>
+                            <span class="time-slot available">11:00 AM</span>
+                            <span class="time-slot available">12:00 PM</span>
+                            <span class="time-slot available">1:00 PM</span>
+                            <span class="time-slot available">2:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="availability-day">
+                        <h5>Sunday</h5>
+                        <div class="time-slots">
+                            <span class="time-slot unavailable">Closed</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function loadReports() {
+            // Mock report data
+            document.getElementById('revenue-summary').textContent = '$3,240';
+            document.getElementById('appointment-volume').textContent = '156';
+            document.getElementById('avg-service-time').textContent = '75 min';
+            document.getElementById('client-satisfaction').textContent = '98%';
+            
+            // Simple chart placeholder
+            const canvas = document.getElementById('revenue-chart');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw simple bar chart
+            const data = [1200, 1500, 1800, 2100, 2400, 2700, 3240];
+            const maxValue = Math.max(...data);
+            const barWidth = canvas.width / data.length;
+            
+            data.forEach((value, index) => {
+                const barHeight = (value / maxValue) * canvas.height * 0.8;
+                const x = index * barWidth;
+                const y = canvas.height - barHeight;
+                
+                ctx.fillStyle = '#ff69b4';
+                ctx.fillRect(x + 10, y, barWidth - 20, barHeight);
+            });
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+        
+        function formatTime(timeString) {
+            const [hours, minutes] = timeString.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            return `${displayHour}:${minutes} ${ampm}`;
+        }
+        
+        // Admin action functions
+        window.editAppointment = function(id) {
+            if (window.showAlert) {
+                window.showAlert('Edit appointment functionality would open here.', 'info');
+            }
+        };
+        
+        window.cancelAppointment = async function(id) {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                try {
+                    const result = await window.FirebaseAppointments.updateAppointmentStatus(id, 'cancelled');
+                    
+                    if (result.success) {
+                        if (window.showAlert) {
+                            window.showAlert('Appointment cancelled successfully.', 'success');
+                        }
+                        // Reload appointments
+                        await loadDashboardData();
+                    } else {
+                        throw new Error(result.error);
+                    }
+                } catch (error) {
+                    console.error('Error cancelling appointment:', error);
+                    if (window.showAlert) {
+                        window.showAlert('Error cancelling appointment. Please try again.', 'error');
+                    }
+                }
+            }
+        };
+        
+        window.editService = function(id) {
+            if (window.showAlert) {
+                window.showAlert('Edit service functionality would open here.', 'info');
+            }
+        };
+        
+        window.deleteServiceConfirm = async function(id) {
+            if (confirm('Are you sure you want to delete this service?')) {
+                try {
+                    const result = await window.FirebaseServices.deleteService(id);
+                    
+                    if (result.success) {
+                        if (window.showAlert) {
+                            window.showAlert('Service deleted successfully.', 'success');
+                        }
+                        // Reload services
+                        await loadDashboardData();
+                    } else {
+                        throw new Error(result.error);
+                    }
+                } catch (error) {
+                    console.error('Error deleting service:', error);
+                    if (window.showAlert) {
+                        window.showAlert('Error deleting service. Please try again.', 'error');
+                    }
+                }
+            }
+        };
+        
+        // Set Availability button functionality
+        document.getElementById('set-availability-btn').addEventListener('click', function() {
+            showAvailabilityModal();
+        });
+
+        // Logout functionality
+        document.getElementById('logout-admin-btn').addEventListener('click', async function() {
+            try {
+                await window.FirebaseAuth.signOutAdmin();
+                showLogin();
+                if (window.showAlert) {
+                    window.showAlert('Logged out successfully.', 'success');
+                }
+            } catch (error) {
+                console.error('Error logging out:', error);
+            }
+        });
+        
+        // Export data functionality
+        document.getElementById('export-data-btn').addEventListener('click', function() {
+            if (window.showAlert) {
+                window.showAlert('Data export functionality would generate a CSV file here.', 'info');
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
