@@ -276,6 +276,68 @@ nav *::after {
     content: none !important;
 }
 
+/* Force remove any content from navigation items */
+.nav-item::before,
+.nav-item::after {
+    display: none !important;
+    content: "" !important;
+}
+
+.nav-link::before,
+.nav-link::after {
+    display: none !important;
+    content: "" !important;
+}
+
+/* Target the specific problematic items */
+.nav-item.guest-only::before,
+.nav-item.guest-only::after,
+.nav-item.customer-only::before,
+.nav-item.customer-only::after {
+    display: none !important;
+    content: "" !important;
+}
+
+/* Force remove any dots from the entire navigation */
+nav ul li::marker {
+    display: none !important;
+    content: "" !important;
+}
+
+/* Override any Font Awesome styles */
+.fa::before,
+.fa::after {
+    display: none !important;
+    content: "" !important;
+}
+
+/* Force remove any dots from specific navigation text */
+.nav-link[href*="customer-login"]::after,
+.nav-link[href*="customer-dashboard"]::after {
+    display: none !important;
+    content: "" !important;
+}
+
+/* Target the exact text content */
+a[href="customer-login.html"]::after,
+a[href="customer-dashboard.html"]::after {
+    display: none !important;
+    content: "" !important;
+}
+
+/* Force remove any browser-generated content */
+.nav-list li:not(:first-child)::before {
+    display: none !important;
+    content: "" !important;
+}
+
+/* Remove any dots that might be added by the browser */
+.nav-list li::marker {
+    display: none !important;
+    content: "" !important;
+    font-size: 0 !important;
+}
+
 .nav-link {
     font-weight: 500;
     padding: var(--spacing-sm) var(--spacing-md);
