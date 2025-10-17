@@ -335,13 +335,36 @@
     <script src="js/main.js"></script>
     
     <script>
+        // Wait for authentication to initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Listen for auth state changes
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    // User is logged in, load appointments
+                    loadCustomerAppointments();
+                } else {
+                    // User is not logged in, show login prompt
+                    const container = document.getElementById('appointments-container');
+                    container.innerHTML = `
+                        <div class="no-appointments">
+                            <i class="fas fa-lock"></i>
+                            <h3>Please Log In</h3>
+                            <p>You need to be logged in to view your appointments.</p>
+                            <a href="customer-login.html" class="btn-book-now">Log In</a>
+                        </div>
+                    `;
+                }
+            });
+        });
+
         // Load customer appointments
         async function loadCustomerAppointments() {
             const container = document.getElementById('appointments-container');
             
             try {
-                // Check if customer is logged in
-                if (!window.CustomerAuth.getCurrentCustomer()) {
+                // Check if customer is logged in using Firebase auth directly
+                const user = firebase.auth().currentUser;
+                if (!user) {
                     container.innerHTML = `
                         <div class="no-appointments">
                             <i class="fas fa-lock"></i>
