@@ -247,6 +247,35 @@ nav ul li::after {
     display: none !important;
 }
 
+/* Target Font Awesome icons specifically */
+.fas.fa-user::after,
+.fas.fa-sign-in-alt::after,
+.fas.fa-sign-out-alt::after {
+    display: none !important;
+    content: none !important;
+}
+
+.fas.fa-user::before,
+.fas.fa-sign-in-alt::before,
+.fas.fa-sign-out-alt::before {
+    display: none !important;
+    content: none !important;
+}
+
+/* Force remove any dots from navigation links */
+.nav-link::after,
+.nav-link::before {
+    display: none !important;
+    content: none !important;
+}
+
+/* Nuclear option - remove all pseudo-elements from navigation */
+nav *::before,
+nav *::after {
+    display: none !important;
+    content: none !important;
+}
+
 .nav-link {
     font-weight: 500;
     padding: var(--spacing-sm) var(--spacing-md);
