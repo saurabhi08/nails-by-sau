@@ -232,15 +232,20 @@ function closePaymentModal() {
 
 // Show appointment confirmation
 function showAppointmentConfirmation() {
-    if (window.showAlert) {
+    const appointmentData = window.currentAppointmentData;
+    if (window.showConfirmationModal && appointmentData) {
+        window.showConfirmationModal(appointmentData);
+    } else if (window.showAlert) {
         window.showAlert('🎉 Your appointment has been booked and payment processed successfully! You will receive a confirmation email shortly.', 'success');
     }
 }
 
 // Alternative payment methods
 function showPaymentOptions(appointmentData) {
+    console.log('Showing payment options for:', appointmentData);
     const modal = document.createElement('div');
     modal.className = 'modal active';
+    modal.id = 'payment-options-modal';
     modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
@@ -274,6 +279,7 @@ function showPaymentOptions(appointmentData) {
 
 // Select payment method
 function selectPaymentMethod(method) {
+    console.log('Payment method selected:', method);
     const appointmentData = window.currentAppointmentData || {};
     
     switch (method) {
@@ -290,6 +296,9 @@ function selectPaymentMethod(method) {
             break;
     }
 }
+
+// Make selectPaymentMethod available globally
+window.selectPaymentMethod = selectPaymentMethod;
 
 // Save appointment with payment info
 async function saveAppointmentWithPayment(appointmentData) {
@@ -312,11 +321,14 @@ async function saveAppointmentWithPayment(appointmentData) {
 
 // Close payment options modal
 function closePaymentOptions() {
-    const modal = document.querySelector('.modal');
+    const modal = document.getElementById('payment-options-modal');
     if (modal) {
         modal.remove();
     }
 }
+
+// Make closePaymentOptions available globally
+window.closePaymentOptions = closePaymentOptions;
 
 // Export functions for global use
 window.PaymentIntegration = {

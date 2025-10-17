@@ -315,14 +315,146 @@
         </div>
     </footer>
     
+    <!-- Message Confirmation Modal -->
+    <div id="message-confirmation-modal" class="confirmation-modal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);">
+        <div class="confirmation-content" style="background-color: #fff; margin: 10% auto; padding: 0; border-radius: 20px; width: 90%; max-width: 500px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); animation: slideIn 0.3s ease; overflow: hidden;">
+            <div class="confirmation-header" style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 30px 20px; text-align: center;">
+                <div class="confirmation-icon" style="font-size: 4rem; margin-bottom: 15px;">✉️</div>
+                <h2 class="confirmation-title" style="font-size: 1.8rem; font-weight: 700; margin: 0 0 10px 0;">Message Sent!</h2>
+                <p class="confirmation-subtitle" style="font-size: 1rem; opacity: 0.9; margin: 0;">We've received your message</p>
+            </div>
+            
+            <div class="confirmation-body" style="padding: 30px 20px; text-align: center;">
+                <p style="margin: 0 0 20px 0; color: #666; font-size: 1.1rem;">
+                    Thank you for contacting <strong style="color: #ff69b4;">Nails By Sau</strong>!
+                </p>
+                
+                <div class="message-details" id="message-details" style="background: #f8f9fa; border-radius: 12px; padding: 20px; margin: 20px 0; text-align: left;">
+                    <!-- Message details will be populated here -->
+                </div>
+                
+                <p style="margin: 20px 0 0 0; color: #666; font-size: 0.95rem;">
+                    📧 We typically respond within 24 hours<br>
+                    📱 Check your email for our reply
+                </p>
+            </div>
+            
+            <div class="confirmation-actions" style="padding: 20px; text-align: center; background: #f8f9fa;">
+                <button class="btn-confirm" onclick="closeMessageConfirmationModal()" style="background: linear-gradient(135deg, #28a745, #20c997); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-size: 1rem; font-weight: 600; cursor: pointer; margin: 0 10px;">
+                    <i class="fas fa-check"></i> Perfect!
+                </button>
+                <button class="btn-secondary" onclick="sendAnotherMessage()" style="background: #6c757d; color: white; border: none; padding: 12px 30px; border-radius: 25px; font-size: 1rem; font-weight: 600; cursor: pointer; margin: 0 10px;">
+                    <i class="fas fa-envelope"></i> Send Another
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+    </style>
+    
     <script src="js/main.js"></script>
     
     <!-- Firebase Configuration -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
     <script src="js/firebase-config.js"></script>
     <script src="js/firebase-messages.js"></script>
+    
+    <script>
+        // Show message confirmation modal
+        function showMessageConfirmationModal(messageData) {
+            const modal = document.getElementById('message-confirmation-modal');
+            const detailsContainer = document.getElementById('message-details');
+            
+            // Format message details
+            const details = `
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                    <span style="font-weight: 600; color: #495057;">Name:</span>
+                    <span style="color: #212529;">${messageData.name}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                    <span style="font-weight: 600; color: #495057;">Email:</span>
+                    <span style="color: #212529;">${messageData.email}</span>
+                </div>
+                ${messageData.phone ? `
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                    <span style="font-weight: 600; color: #495057;">Phone:</span>
+                    <span style="color: #212529;">${messageData.phone}</span>
+                </div>
+                ` : ''}
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e9ecef;">
+                    <span style="font-weight: 600; color: #495057;">Subject:</span>
+                    <span style="color: #212529; text-transform: capitalize;">${messageData.subject}</span>
+                </div>
+                <div style="padding: 8px 0;">
+                    <span style="font-weight: 600; color: #495057; display: block; margin-bottom: 5px;">Message:</span>
+                    <span style="color: #212529; display: block;">${messageData.message}</span>
+                </div>
+            `;
+            
+            detailsContainer.innerHTML = details;
+            modal.style.display = 'block';
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close message confirmation modal
+        function closeMessageConfirmationModal() {
+            const modal = document.getElementById('message-confirmation-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Redirect to home page
+            window.location.href = 'index.html';
+        }
+        
+        // Send another message
+        function sendAnotherMessage() {
+            const modal = document.getElementById('message-confirmation-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Scroll to contact form
+            document.getElementById('contact-form').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('message-confirmation-modal');
+            if (event.target === modal) {
+                closeMessageConfirmationModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('message-confirmation-modal');
+                if (modal.style.display === 'block') {
+                    closeMessageConfirmationModal();
+                }
+            }
+        });
+    </script>
     
     <style>
         :root {
@@ -1058,12 +1190,11 @@
                 const result = await window.FirebaseMessages.saveMessage(data);
                 
                 if (result.success) {
+                    // Show confirmation modal instead of alert
+                    showMessageConfirmationModal(data);
+                    
                     // Reset form
                     document.getElementById('contact-form').reset();
-                    
-                    if (window.showAlert) {
-                        window.showAlert('Thank you for your message! We\'ll get back to you within 24 hours.', 'success');
-                    }
                 } else {
                     throw new Error(result.error);
                 }

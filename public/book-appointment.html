@@ -1407,36 +1407,113 @@
                     // Store appointment data for payment
                     window.currentAppointmentData = appointmentData;
                     
-                    // Show payment options
-                    if (window.PaymentIntegration) {
-                        window.PaymentIntegration.showPaymentOptions(appointmentData);
-                    } else {
-                        // Fallback to direct save if payment not available
-                        try {
-                            const result = await window.FirebaseAppointments.saveAppointment(appointmentData);
-                            
-                            if (result.success) {
-                                // Show confirmation modal with appointment details
-                                showConfirmationModal(appointmentData);
-                                
-                                // Scroll to top
-                                window.scrollTo({ top: 0, behavior: 'smooth' });
-                            } else {
-                                throw new Error(result.error);
-                            }
-                        } catch (error) {
-                            console.error('Error booking appointment:', error);
-                            if (window.showAlert) {
-                                window.showAlert('There was an error booking your appointment. Please try again.', 'error');
-                            }
-                            
-                            // Reset button
-                            submitBtn.innerHTML = '<i class="fas fa-calendar-check" aria-hidden="true"></i> Confirm Booking';
-                            submitBtn.disabled = false;
-                        }
-                    }
+                    // Reset button first
+                    submitBtn.innerHTML = '<i class="fas fa-calendar-check" aria-hidden="true"></i> Confirm Booking';
+                    submitBtn.disabled = false;
+                    
+                    // Show payment options modal directly
+                    showPaymentOptionsModal(appointmentData);
                 }
             }
+            
+            // Show payment options modal
+            function showPaymentOptionsModal(appointmentData) {
+                const modal = document.createElement('div');
+                modal.className = 'modal active';
+                modal.id = 'payment-options-modal';
+                modal.style.display = 'flex';
+                modal.innerHTML = `
+                    <div class="modal-content" style="max-width: 500px;">
+                        <div class="modal-header">
+                            <h3>💳 Choose Payment Method</h3>
+                            <button class="modal-close" onclick="closePaymentOptionsModal()">&times;</button>
+                        </div>
+                        <div class="modal-body" style="padding: 30px;">
+                            <div style="display: grid; gap: 15px;">
+                                <div class="payment-option" onclick="selectPaymentMethodAndSave('online')" style="display: flex; align-items: center; gap: 15px; padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s;">
+                                    <i class="fas fa-credit-card" style="font-size: 2rem; color: #ff69b4;"></i>
+                                    <div>
+                                        <h4 style="margin: 0 0 5px 0;">Pay Online Now</h4>
+                                        <p style="margin: 0; color: #666; font-size: 0.9rem;">Secure payment with credit/debit card</p>
+                                    </div>
+                                </div>
+                                <div class="payment-option" onclick="selectPaymentMethodAndSave('cash')" style="display: flex; align-items: center; gap: 15px; padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s;">
+                                    <i class="fas fa-money-bill-wave" style="font-size: 2rem; color: #28a745;"></i>
+                                    <div>
+                                        <h4 style="margin: 0 0 5px 0;">Pay at Salon</h4>
+                                        <p style="margin: 0; color: #666; font-size: 0.9rem;">Cash or card payment when you arrive</p>
+                                    </div>
+                                </div>
+                                <div class="payment-option" onclick="selectPaymentMethodAndSave('etransfer')" style="display: flex; align-items: center; gap: 15px; padding: 20px; border: 2px solid #e9ecef; border-radius: 12px; cursor: pointer; transition: all 0.3s;">
+                                    <i class="fas fa-mobile-alt" style="font-size: 2rem; color: #17a2b8;"></i>
+                                    <div>
+                                        <h4 style="margin: 0 0 5px 0;">E-Transfer</h4>
+                                        <p style="margin: 0; color: #666; font-size: 0.9rem;">Send e-transfer to nailsbysau@email.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // Add hover effects
+                modal.querySelectorAll('.payment-option').forEach(option => {
+                    option.addEventListener('mouseenter', function() {
+                        this.style.borderColor = '#ff69b4';
+                        this.style.background = 'rgba(255, 105, 180, 0.05)';
+                        this.style.transform = 'translateY(-2px)';
+                    });
+                    option.addEventListener('mouseleave', function() {
+                        this.style.borderColor = '#e9ecef';
+                        this.style.background = 'transparent';
+                        this.style.transform = 'translateY(0)';
+                    });
+                });
+            }
+            
+            // Select payment method and save appointment
+            async function selectPaymentMethodAndSave(method) {
+                const appointmentData = window.currentAppointmentData;
+                
+                if (method === 'online') {
+                    // Show Stripe payment (for future implementation)
+                    alert('Online payment with Stripe will be processed here.\n\nFor now, using test mode - appointment will be saved.');
+                    appointmentData.paymentMethod = 'online';
+                    appointmentData.paymentStatus = 'paid';
+                } else {
+                    appointmentData.paymentMethod = method;
+                    appointmentData.paymentStatus = 'pending';
+                }
+                
+                // Save appointment to Firebase
+                try {
+                    const result = await window.FirebaseAppointments.saveAppointment(appointmentData);
+                    
+                    if (result.success) {
+                        closePaymentOptionsModal();
+                        showConfirmationModal(appointmentData);
+                    } else {
+                        alert('Error booking appointment: ' + result.error);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error booking appointment. Please try again.');
+                }
+            }
+            
+            // Close payment options modal
+            function closePaymentOptionsModal() {
+                const modal = document.getElementById('payment-options-modal');
+                if (modal) {
+                    modal.remove();
+                }
+            }
+            
+            // Make functions global
+            window.selectPaymentMethodAndSave = selectPaymentMethodAndSave;
+            window.closePaymentOptionsModal = closePaymentOptionsModal;
             
             function formatDate(dateString) {
                 const date = new Date(dateString);
@@ -1625,7 +1702,7 @@
             
             <div class="confirmation-actions">
                 <button class="btn-confirm" onclick="closeConfirmationModal()">
-                    <i class="fas fa-check"></i> Perfect!
+                    <i class="fas fa-home"></i> Go to My Account
                 </button>
                 <button class="btn-secondary" onclick="bookAnother()">
                     <i class="fas fa-plus"></i> Book Another
@@ -1636,7 +1713,7 @@
     
     <script>
         // Show appointment confirmation modal
-        function showConfirmationModal(appointmentData) {
+        window.showConfirmationModal = function(appointmentData) {
             const modal = document.getElementById('confirmation-modal');
             const detailsContainer = document.getElementById('appointment-details');
             
@@ -1679,16 +1756,16 @@
             // Prevent body scroll
             document.body.style.overflow = 'hidden';
             
-            // Auto-close after 10 seconds (optional)
-            setTimeout(() => {
-                if (modal.style.display === 'block') {
-                    closeConfirmationModal();
-                }
-            }, 10000);
+            // Optional: Auto-redirect after 15 seconds if user doesn't click
+            // setTimeout(() => {
+            //     if (modal.style.display === 'block') {
+            //         closeConfirmationModal();
+            //     }
+            // }, 15000);
         }
         
         // Close confirmation modal
-        function closeConfirmationModal() {
+        window.closeConfirmationModal = function() {
             const modal = document.getElementById('confirmation-modal');
             modal.style.display = 'none';
             document.body.style.overflow = 'auto';
@@ -1696,18 +1773,32 @@
             // Reset form
             document.getElementById('booking-form').reset();
             
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Redirect to customer dashboard or home
+            if (firebase.auth().currentUser) {
+                // If user is logged in, go to their dashboard
+                window.location.href = 'customer-dashboard.html';
+            } else {
+                // If not logged in, go to home page
+                window.location.href = 'index.html';
+            }
         }
         
         // Book another appointment
-        function bookAnother() {
-            closeConfirmationModal();
+        window.bookAnother = function() {
+            const modal = document.getElementById('confirmation-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
             
-            // Scroll to service selection
-            document.getElementById('service-selection').scrollIntoView({ 
-                behavior: 'smooth' 
-            });
+            // Reset form and scroll to top
+            document.getElementById('booking-form').reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Reset to step 1
+            if (typeof currentStep !== 'undefined') {
+                currentStep = 1;
+                showStep(1);
+                updateNavigation();
+            }
         }
         
         // Close modal when clicking outside

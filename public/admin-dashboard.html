@@ -192,6 +192,20 @@
                 </div>
             </div>
             
+            <div class="dashboard-panel" id="messages-panel" aria-labelledby="messages-heading" style="display: none;">
+                <div class="panel-header">
+                    <h3 id="messages-heading">Customer Messages</h3>
+                    <button type="button" class="btn btn-secondary" onclick="loadMessages()">
+                        <i class="fas fa-refresh" aria-hidden="true"></i>
+                        Refresh Messages
+                    </button>
+                </div>
+                
+                <div id="messages-list" style="margin-top: 20px;">
+                    <div class="loading">Loading messages...</div>
+                </div>
+            </div>
+            
             <div class="dashboard-panel" id="services-panel" aria-labelledby="services-heading" style="display: none;">
                 <div class="panel-header">
                     <h3 id="services-heading">Service Management</h3>
@@ -1432,8 +1446,13 @@
         function displayMessages(messages) {
             const container = document.getElementById('messages-list');
             
+            if (!container) {
+                console.error('Messages container not found');
+                return;
+            }
+            
             if (messages.length === 0) {
-                container.innerHTML = '<div class="no-data">No messages yet</div>';
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No messages yet. Messages from the contact form will appear here.</div>';
                 return;
             }
             
@@ -1451,35 +1470,35 @@
                 const repliedClass = message.replied ? 'replied' : '';
                 
                 return `
-                    <div class="message-item ${statusClass} ${repliedClass}">
-                        <div class="message-header">
-                            <div class="message-info">
-                                <h4>${message.name}</h4>
-                                <p class="message-email">${message.email}</p>
-                                ${message.phone ? `<p class="message-phone">${message.phone}</p>` : ''}
+                    <div class="message-item" style="background: white; border: 1px solid #e9ecef; border-radius: 12px; padding: 20px; margin-bottom: 15px; ${message.status === 'unread' ? 'border-left: 4px solid #ff69b4;' : ''}">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                            <div>
+                                <h4 style="margin: 0 0 5px 0; color: #333;">${message.name}</h4>
+                                <p style="margin: 0; color: #666; font-size: 0.9rem;">📧 ${message.email}</p>
+                                ${message.phone ? `<p style="margin: 0; color: #666; font-size: 0.9rem;">📞 ${message.phone}</p>` : ''}
                             </div>
-                            <div class="message-meta">
-                                <span class="message-time">${timestamp}</span>
-                                <span class="message-status">${message.status}</span>
-                                ${message.replied ? '<span class="replied-badge">Replied</span>' : ''}
+                            <div style="text-align: right;">
+                                <span style="font-size: 0.85rem; color: #999;">${timestamp}</span><br>
+                                <span style="display: inline-block; margin-top: 5px; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; ${message.status === 'unread' ? 'background: #fff3cd; color: #856404;' : 'background: #d4edda; color: #155724;'}">${message.status.toUpperCase()}</span>
+                                ${message.replied ? '<span style="display: inline-block; margin-top: 5px; margin-left: 5px; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; background: #d1ecf1; color: #0c5460;">REPLIED</span>' : ''}
                             </div>
                         </div>
-                        <div class="message-content">
-                            <h5>${message.subject}</h5>
-                            <p>${message.message}</p>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <h5 style="margin: 0 0 8px 0; color: #ff69b4; font-size: 1rem;">Subject: ${message.subject}</h5>
+                            <p style="margin: 0; color: #333; line-height: 1.6;">${message.message}</p>
                         </div>
-                        <div class="message-actions">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                             ${message.status === 'unread' ? 
-                                `<button class="btn btn-sm btn-secondary" onclick="markAsRead('${message.id}')">
+                                `<button class="btn btn-secondary" onclick="markAsRead('${message.id}')" style="padding: 8px 16px; font-size: 0.85rem;">
                                     <i class="fas fa-eye"></i> Mark as Read
                                 </button>` : ''
                             }
                             ${!message.replied ? 
-                                `<button class="btn btn-sm btn-primary" onclick="markAsReplied('${message.id}')">
+                                `<button class="btn" onclick="markAsReplied('${message.id}')" style="padding: 8px 16px; font-size: 0.85rem; background: #17a2b8;">
                                     <i class="fas fa-reply"></i> Mark as Replied
                                 </button>` : ''
                             }
-                            <button class="btn btn-sm btn-danger" onclick="deleteMessage('${message.id}')">
+                            <button class="btn" onclick="deleteMessageConfirm('${message.id}')" style="padding: 8px 16px; font-size: 0.85rem; background: #dc3545;">
                                 <i class="fas fa-trash"></i> Delete
                             </button>
                         </div>
@@ -1491,7 +1510,7 @@
         }
         
         // Mark message as read
-        async function markAsRead(messageId) {
+        window.markAsRead = async function(messageId) {
             try {
                 const result = await window.FirebaseMessages.markAsRead(messageId);
                 if (result.success) {
@@ -1503,10 +1522,10 @@
             } catch (error) {
                 console.error('Error marking message as read:', error);
             }
-        }
+        };
         
         // Mark message as replied
-        async function markAsReplied(messageId) {
+        window.markAsReplied = async function(messageId) {
             try {
                 const result = await window.FirebaseMessages.markAsReplied(messageId);
                 if (result.success) {
@@ -1518,10 +1537,10 @@
             } catch (error) {
                 console.error('Error marking message as replied:', error);
             }
-        }
+        };
         
-        // Delete message
-        async function deleteMessage(messageId) {
+        // Delete message with confirmation
+        async function deleteMessageConfirm(messageId) {
             if (confirm('Are you sure you want to delete this message?')) {
                 try {
                     const result = await window.FirebaseMessages.deleteMessage(messageId);
@@ -1536,6 +1555,9 @@
                 }
             }
         }
+        
+        // Make deleteMessageConfirm available globally
+        window.deleteMessageConfirm = deleteMessageConfirm;
         
         function loadServices() {
             const servicesGrid = document.querySelector('.services-grid');
@@ -1699,9 +1721,115 @@
         }
         
         // Admin action functions
-        window.editAppointment = function(id) {
-            if (window.showAlert) {
-                window.showAlert('Edit appointment functionality would open here.', 'info');
+        window.editAppointment = async function(id) {
+            // Find the appointment
+            const appointment = window.adminData.appointments.find(apt => apt.id === id);
+            if (!appointment) {
+                alert('Appointment not found');
+                return;
+            }
+            
+            // Create edit modal
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.style.display = 'flex';
+            modal.id = 'edit-appointment-modal';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 600px;">
+                    <div class="modal-header">
+                        <h3>✏️ Edit Appointment</h3>
+                        <button class="modal-close" onclick="closeEditModal()">&times;</button>
+                    </div>
+                    <div class="modal-body" style="padding: 30px;">
+                        <form id="edit-appointment-form">
+                            <div class="form-group">
+                                <label class="form-label">Client Name</label>
+                                <input type="text" id="edit-firstName" class="form-input" value="${appointment.firstName || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" id="edit-lastName" class="form-input" value="${appointment.lastName || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" id="edit-email" class="form-input" value="${appointment.email || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" id="edit-phone" class="form-input" value="${appointment.phone || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Date</label>
+                                <input type="date" id="edit-date" class="form-input" value="${appointment.appointmentDate || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Time</label>
+                                <input type="time" id="edit-time" class="form-input" value="${appointment.appointmentTime || ''}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select id="edit-status" class="form-select">
+                                    <option value="pending" ${appointment.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="confirmed" ${appointment.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                                    <option value="completed" ${appointment.status === 'completed' ? 'selected' : ''}>Completed</option>
+                                    <option value="cancelled" ${appointment.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Notes</label>
+                                <textarea id="edit-notes" class="form-textarea" rows="3">${appointment.notes || ''}</textarea>
+                            </div>
+                            <div class="form-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                                <button type="submit" class="btn">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Handle form submission
+            document.getElementById('edit-appointment-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const updatedData = {
+                    firstName: document.getElementById('edit-firstName').value,
+                    lastName: document.getElementById('edit-lastName').value,
+                    email: document.getElementById('edit-email').value,
+                    phone: document.getElementById('edit-phone').value,
+                    appointmentDate: document.getElementById('edit-date').value,
+                    appointmentTime: document.getElementById('edit-time').value,
+                    status: document.getElementById('edit-status').value,
+                    notes: document.getElementById('edit-notes').value
+                };
+                
+                try {
+                    const result = await window.FirebaseAppointments.updateAppointment(id, updatedData);
+                    
+                    if (result.success) {
+                        closeEditModal();
+                        if (window.showAlert) {
+                            window.showAlert('Appointment updated successfully!', 'success');
+                        }
+                        // Reload dashboard data
+                        await loadDashboardData();
+                    } else {
+                        alert('Error updating appointment: ' + result.error);
+                    }
+                } catch (error) {
+                    console.error('Error updating appointment:', error);
+                    alert('Error updating appointment. Please try again.');
+                }
+            });
+        };
+        
+        // Close edit modal
+        window.closeEditModal = function() {
+            const modal = document.getElementById('edit-appointment-modal');
+            if (modal) {
+                modal.remove();
             }
         };
         

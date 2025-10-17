@@ -22,9 +22,8 @@ class FirebaseMessages {
                 repliedAt: null
             };
 
-            const docRef = await firebase.firestore()
-                .collection(this.messagesCollection)
-                .add(message);
+            const db = window.firebaseDB || firebase.firestore();
+            const docRef = await db.collection(this.messagesCollection).add(message);
 
             console.log('Message saved with ID:', docRef.id);
             return { success: true, messageId: docRef.id };
@@ -37,8 +36,8 @@ class FirebaseMessages {
     // Get all messages for admin dashboard
     async getAllMessages() {
         try {
-            const messages = await firebase.firestore()
-                .collection(this.messagesCollection)
+            const db = window.firebaseDB || firebase.firestore();
+            const messages = await db.collection(this.messagesCollection)
                 .orderBy('timestamp', 'desc')
                 .get();
 
@@ -60,8 +59,8 @@ class FirebaseMessages {
     // Get unread messages count
     async getUnreadCount() {
         try {
-            const unreadMessages = await firebase.firestore()
-                .collection(this.messagesCollection)
+            const db = window.firebaseDB || firebase.firestore();
+            const unreadMessages = await db.collection(this.messagesCollection)
                 .where('status', '==', 'unread')
                 .get();
 
@@ -75,8 +74,8 @@ class FirebaseMessages {
     // Mark message as read
     async markAsRead(messageId) {
         try {
-            await firebase.firestore()
-                .collection(this.messagesCollection)
+            const db = window.firebaseDB || firebase.firestore();
+            await db.collection(this.messagesCollection)
                 .doc(messageId)
                 .update({
                     status: 'read',
@@ -93,8 +92,8 @@ class FirebaseMessages {
     // Mark message as replied
     async markAsReplied(messageId) {
         try {
-            await firebase.firestore()
-                .collection(this.messagesCollection)
+            const db = window.firebaseDB || firebase.firestore();
+            await db.collection(this.messagesCollection)
                 .doc(messageId)
                 .update({
                     replied: true,
@@ -111,8 +110,8 @@ class FirebaseMessages {
     // Delete message
     async deleteMessage(messageId) {
         try {
-            await firebase.firestore()
-                .collection(this.messagesCollection)
+            const db = window.firebaseDB || firebase.firestore();
+            await db.collection(this.messagesCollection)
                 .doc(messageId)
                 .delete();
 
@@ -126,8 +125,8 @@ class FirebaseMessages {
     // Get message by ID
     async getMessage(messageId) {
         try {
-            const messageDoc = await firebase.firestore()
-                .collection(this.messagesCollection)
+            const db = window.firebaseDB || firebase.firestore();
+            const messageDoc = await db.collection(this.messagesCollection)
                 .doc(messageId)
                 .get();
 
