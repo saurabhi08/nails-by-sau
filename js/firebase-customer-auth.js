@@ -150,6 +150,13 @@ class CustomerAuth {
 
         // Update navigation
         this.updateNavigationForCustomer();
+        
+        // Only redirect if we're on login page and user is logged in
+        if (window.location.pathname.includes('customer-login.html')) {
+            setTimeout(() => {
+                window.location.href = 'customer-dashboard.html';
+            }, 1000);
+        }
     }
 
     // Update UI for guest (not logged in)
@@ -164,6 +171,13 @@ class CustomerAuth {
 
         // Update navigation
         this.updateNavigationForGuest();
+        
+        // Only redirect if we're on customer dashboard and user is not logged in
+        if (window.location.pathname.includes('customer-dashboard.html')) {
+            setTimeout(() => {
+                window.location.href = 'customer-login.html';
+            }, 1000);
+        }
     }
 
     // Update navigation for customer

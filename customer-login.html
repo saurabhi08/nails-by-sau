@@ -426,12 +426,8 @@
 
         // Check if customer is already logged in
         document.addEventListener('DOMContentLoaded', function() {
-            if (window.CustomerAuth.getCurrentCustomer()) {
-                showMessage('You are already logged in. Redirecting...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'customer-dashboard.html';
-                }, 1500);
-            }
+            // Let the auth state change handler handle redirects
+            // This prevents redirect loops
         });
     </script>
 </body>
