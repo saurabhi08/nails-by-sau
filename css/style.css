@@ -215,7 +215,36 @@ a:hover, a:focus {
 }
 
 .nav-list li {
-    list-style: none;
+    list-style: none !important;
+}
+
+.nav-list li::marker {
+    display: none;
+}
+
+.nav-list li::before {
+    display: none;
+}
+
+.nav-list li::after {
+    display: none;
+}
+
+/* Force remove all list styling from navigation */
+nav ul li {
+    list-style: none !important;
+}
+
+nav ul li::marker {
+    display: none !important;
+}
+
+nav ul li::before {
+    display: none !important;
+}
+
+nav ul li::after {
+    display: none !important;
 }
 
 .nav-link {
