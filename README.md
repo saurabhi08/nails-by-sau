@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# nails-by-sau
-=======
 # Nail's By Sau Booking System
 
 A comprehensive web application for managing nail salon appointments, built as a capstone project for Humber College.
@@ -246,11 +243,3 @@ For questions about this project, please contact the development team.
 - Email/SMS notification services
 - Payment processing integration
 - Security measures and data protection
-
-
-
-
-
-
-
->>>>>>> b8607b9 (Initial commit - added Nails By Sau Booking System project)
