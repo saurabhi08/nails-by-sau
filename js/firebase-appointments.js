@@ -2,16 +2,22 @@
 // Handles all appointment-related database operations
 
 // Save appointment to Firebase
-async function saveAppointmentToFirebase(appointmentData) {
+async function saveAppointment(appointmentData) {
     try {
-        const docRef = await firebaseDB.collection('appointments').add({
+        // Add unique ID if not present
+        if (!appointmentData.id) {
+            appointmentData.id = 'apt_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        const docRef = await firebaseDB.collection('appointments').doc(appointmentData.id).set({
             ...appointmentData,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            status: 'pending'
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: appointmentData.status || 'pending'
         });
         
-        console.log('Appointment saved with ID:', docRef.id);
-        return { success: true, id: docRef.id };
+        console.log('Appointment saved with ID:', appointmentData.id);
+        return { success: true, id: appointmentData.id };
     } catch (error) {
         console.error('Error saving appointment:', error);
         return { success: false, error: error.message };
@@ -179,7 +185,7 @@ async function isTimeSlotAvailable(date, time) {
 
 // Export functions
 window.FirebaseAppointments = {
-    saveAppointment: saveAppointmentToFirebase,
+    saveAppointment,
     getAllAppointments,
     getAppointmentsByDate,
     getAppointmentsByStatus,

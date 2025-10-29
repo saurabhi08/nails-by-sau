@@ -46,9 +46,6 @@
                         <a href="my-account.html" class="nav-link">My Account</a>
                     </li>
                     <li class="nav-item">
-                        <a href="admin-dashboard.html" class="nav-link">Admin</a>
-                    </li>
-                    <li class="nav-item">
                         <a href="contact.html" class="nav-link active" aria-current="page">Contact</a>
                     </li>
                 </ul>
@@ -201,6 +198,20 @@
                                 </a>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- Embedded Google Maps -->
+                    <div class="google-map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2887.1234567890123!2d-79.12345678901234!3d43.12345678901234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDPCsDA3JzI0LjQiTiA3OcKwMDcnMjQuNCJX!5e0!3m2!1sen!2sca!4v1234567890123!5m2!1sen!2sca"
+                            width="100%" 
+                            height="400" 
+                            style="border:0; border-radius: 8px;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Nails By Sau Location Map">
+                        </iframe>
                     </div>
                 </div>
             </div>
@@ -970,6 +981,28 @@
             box-shadow: var(--smallshadow);
             border: 1px solid var(--border);
             margin-bottom: var(--xlarge);
+        }
+        
+        .google-map-container {
+            margin-top: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            background: var(--background-light);
+        }
+        
+        .google-map-container iframe {
+            display: block;
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: var(--radius-lg);
+        }
+        
+        @media (max-width: 768px) {
+            .google-map-container iframe {
+                height: 300px;
+            }
         }
 
         .map-placeholder {

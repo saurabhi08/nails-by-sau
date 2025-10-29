@@ -92,7 +92,7 @@ function initCalendar() {
         }
         
         // Add days of the month
-        for (let day = 1; day <= daysInMonth; i++) {
+        for (let day = 1; day <= daysInMonth; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'calendar-day';
             dayElement.textContent = day;

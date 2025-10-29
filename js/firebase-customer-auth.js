@@ -15,6 +15,14 @@ class CustomerAuth {
         // Listen for auth state changes
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
+                // Check if this is an admin user
+                if (this.isAdminUser(user)) {
+                    // Admin user - don't treat as customer
+                    this.currentCustomer = null;
+                    this.updateUIForGuest();
+                    return;
+                }
+                
                 // Customer is logged in
                 this.currentCustomer = user;
                 this.updateUIForCustomer();
@@ -30,6 +38,14 @@ class CustomerAuth {
     checkAuthState() {
         const user = firebase.auth().currentUser;
         if (user) {
+            // Check if this is an admin user
+            if (this.isAdminUser(user)) {
+                // Admin user - don't treat as customer
+                this.currentCustomer = null;
+                this.updateUIForGuest();
+                return;
+            }
+            
             this.currentCustomer = user;
             this.updateUIForCustomer();
         }
@@ -38,7 +54,19 @@ class CustomerAuth {
     // Customer login with email and password
     async signInCustomer(email, password) {
         try {
+            // Check if admin is already logged in
+            if (localStorage.getItem('adminAuth') === 'true') {
+                return { success: false, error: 'Admin is already logged in. Please logout from admin panel first.' };
+            }
+            
             const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+            
+            // Check if this is an admin user trying to login as customer
+            if (this.isAdminUser(userCredential.user)) {
+                await firebase.auth().signOut();
+                return { success: false, error: 'Admin users cannot login as customers. Please use the admin login.' };
+            }
+            
             this.currentCustomer = userCredential.user;
             this.updateUIForCustomer();
             return { success: true, user: userCredential.user };
@@ -51,6 +79,11 @@ class CustomerAuth {
     // Customer registration
     async registerCustomer(email, password, firstName, lastName, phone) {
         try {
+            // Check if admin is already logged in
+            if (localStorage.getItem('adminAuth') === 'true') {
+                return { success: false, error: 'Admin is already logged in. Please logout from admin panel first.' };
+            }
+            
             const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
             const user = userCredential.user;
             
@@ -219,7 +252,24 @@ class CustomerAuth {
 
     // Check if current user is admin
     isAdmin() {
-        return this.currentCustomer && this.currentCustomer.email === 'admin@nailsbysau.com';
+        return this.currentCustomer && this.isAdminUser(this.currentCustomer);
+    }
+    
+    // Check if a user is an admin user
+    isAdminUser(user) {
+        if (!user || !user.email) return false;
+        
+        // Check for admin email patterns
+        const adminEmails = [
+            'admin@nailsbysau.com',
+            'admin@nailssbysau.com', // typo in original
+            'sau@nailsbysau.com',
+            'nailsbysau@gmail.com'
+        ];
+        
+        return adminEmails.includes(user.email.toLowerCase()) || 
+               user.email.toLowerCase().includes('admin') ||
+               localStorage.getItem('adminAuth') === 'true';
     }
 
     // Check if current user is customer

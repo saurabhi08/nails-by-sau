@@ -4,8 +4,20 @@
 // Sign in admin user
 async function signInAdmin(email, password) {
     try {
+        // Check if customer is already logged in
+        const currentUser = firebaseAuth.currentUser;
+        if (currentUser && !isAdminUser(currentUser)) {
+            return { success: false, error: 'Customer is already logged in. Please logout from customer account first.' };
+        }
+        
         const userCredential = await firebaseAuth.signInWithEmailAndPassword(email, password);
         console.log('Admin signed in:', userCredential.user.email);
+        
+        // Verify this is actually an admin user
+        if (!isAdminUser(userCredential.user)) {
+            await firebaseAuth.signOut();
+            return { success: false, error: 'This account is not authorized for admin access.' };
+        }
         
         // Store admin status in localStorage
         localStorage.setItem('adminAuth', 'true');
@@ -28,6 +40,12 @@ async function signOutAdmin() {
         localStorage.removeItem('adminEmail');
         
         console.log('Admin signed out');
+        
+        // Show logout confirmation
+        if (window.MessagingSystem) {
+            window.MessagingSystem.showLogoutConfirmation();
+        }
+        
         return { success: true };
     } catch (error) {
         console.error('Error signing out:', error);
@@ -81,6 +99,23 @@ async function isUserAdmin(userId) {
     }
 }
 
+// Check if a user is an admin user (by email)
+function isAdminUser(user) {
+    if (!user || !user.email) return false;
+    
+    // Check for admin email patterns
+    const adminEmails = [
+        'admin@nailsbysau.com',
+        'admin@nailssbysau.com', // typo in original
+        'sau@nailsbysau.com',
+        'nailsbysau@gmail.com'
+    ];
+    
+    return adminEmails.includes(user.email.toLowerCase()) || 
+           user.email.toLowerCase().includes('admin') ||
+           localStorage.getItem('adminAuth') === 'true';
+}
+
 // Reset password
 async function resetPassword(email) {
     try {
@@ -124,6 +159,7 @@ window.FirebaseAuth = {
     onAuthStateChanged,
     createAdminUser,
     isUserAdmin,
+    isAdminUser,
     resetPassword,
     updateUserProfile
 };

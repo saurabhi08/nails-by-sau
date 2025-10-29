@@ -43,12 +43,6 @@
                         <a href="book-appointment.html" class="nav-link">Book Appointment</a>
                     </li>
                     <li class="nav-item">
-                        <a href="my-account.html" class="nav-link">My Account</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="admin-dashboard.html" class="nav-link active" aria-current="page">Admin</a>
-                    </li>
-                    <li class="nav-item">
                         <a href="contact.html" class="nav-link">Contact</a>
                     </li>
                 </ul>
@@ -313,6 +307,9 @@
     <script src="js/firebase-stats.js"></script>
     <script src="js/firebase-messages.js"></script>
     <script src="js/firebase-init.js"></script>
+    <script src="js/messaging-system.js"></script>
+    <script src="js/customer-manager.js"></script>
+    <script src="js/dashboard-stats.js"></script>
     
     <script src="js/main.js"></script>
     
@@ -1294,6 +1291,25 @@
             } else {
                 showLogin();
             }
+            
+            // Check authentication on page load
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user) {
+                    // User is logged in, check if they're admin
+                    const email = user.email;
+                    // You can add additional admin email check here if needed
+                    if (email && (email.includes('admin') || email.includes('@nailsbysau.com'))) {
+                        showDashboard();
+                    } else {
+                        // Not an admin, redirect away
+                        alert('Access denied. Admin access only.');
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    // No user logged in, show login
+                    showLogin();
+                }
+            });
         }
         
         async function handleAdminLogin() {
@@ -1326,12 +1342,18 @@
         function showLogin() {
             document.getElementById('admin-login-section').style.display = 'block';
             document.getElementById('admin-dashboard-section').style.display = 'none';
+            
+            // Clear admin auth
+            localStorage.removeItem('adminAuth');
         }
         
         function showDashboard() {
             console.log('Showing dashboard...');
             document.getElementById('admin-login-section').style.display = 'none';
             document.getElementById('admin-dashboard-section').style.display = 'block';
+            
+            // Set admin auth in localStorage
+            localStorage.setItem('adminAuth', 'true');
             
             // Load dashboard data
             loadDashboardData();
@@ -1893,13 +1915,19 @@
         // Logout functionality
         document.getElementById('logout-admin-btn').addEventListener('click', async function() {
             try {
-                await window.FirebaseAuth.signOutAdmin();
-                showLogin();
-                if (window.showAlert) {
-                    window.showAlert('Logged out successfully.', 'success');
+                const result = await window.FirebaseAuth.signOutAdmin();
+                if (result.success) {
+                    showLogin();
+                } else {
+                    if (window.MessagingSystem) {
+                        window.MessagingSystem.showError('Failed to logout: ' + result.error);
+                    }
                 }
             } catch (error) {
                 console.error('Error logging out:', error);
+                if (window.MessagingSystem) {
+                    window.MessagingSystem.showError('Error logging out. Please try again.');
+                }
             }
         });
         

@@ -214,8 +214,17 @@ a:hover, a:focus {
     align-items: center;
 }
 
+/* Navigation list styling - clean and simple */
+.nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 .nav-list li {
-    list-style: none !important;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-list li::marker {
@@ -228,114 +237,6 @@ a:hover, a:focus {
 
 .nav-list li::after {
     display: none;
-}
-
-/* Force remove all list styling from navigation */
-nav ul li {
-    list-style: none !important;
-}
-
-nav ul li::marker {
-    display: none !important;
-}
-
-nav ul li::before {
-    display: none !important;
-}
-
-nav ul li::after {
-    display: none !important;
-}
-
-/* Target Font Awesome icons specifically */
-.fas.fa-user::after,
-.fas.fa-sign-in-alt::after,
-.fas.fa-sign-out-alt::after {
-    display: none !important;
-    content: none !important;
-}
-
-.fas.fa-user::before,
-.fas.fa-sign-in-alt::before,
-.fas.fa-sign-out-alt::before {
-    display: none !important;
-    content: none !important;
-}
-
-/* Force remove any dots from navigation links */
-.nav-link::after,
-.nav-link::before {
-    display: none !important;
-    content: none !important;
-}
-
-/* Nuclear option - remove all pseudo-elements from navigation */
-nav *::before,
-nav *::after {
-    display: none !important;
-    content: none !important;
-}
-
-/* Force remove any content from navigation items */
-.nav-item::before,
-.nav-item::after {
-    display: none !important;
-    content: "" !important;
-}
-
-.nav-link::before,
-.nav-link::after {
-    display: none !important;
-    content: "" !important;
-}
-
-/* Target the specific problematic items */
-.nav-item.guest-only::before,
-.nav-item.guest-only::after,
-.nav-item.customer-only::before,
-.nav-item.customer-only::after {
-    display: none !important;
-    content: "" !important;
-}
-
-/* Force remove any dots from the entire navigation */
-nav ul li::marker {
-    display: none !important;
-    content: "" !important;
-}
-
-/* Override any Font Awesome styles */
-.fa::before,
-.fa::after {
-    display: none !important;
-    content: "" !important;
-}
-
-/* Force remove any dots from specific navigation text */
-.nav-link[href*="customer-login"]::after,
-.nav-link[href*="customer-dashboard"]::after {
-    display: none !important;
-    content: "" !important;
-}
-
-/* Target the exact text content */
-a[href="customer-login.html"]::after,
-a[href="customer-dashboard.html"]::after {
-    display: none !important;
-    content: "" !important;
-}
-
-/* Force remove any browser-generated content */
-.nav-list li:not(:first-child)::before {
-    display: none !important;
-    content: "" !important;
-}
-
-/* Remove any dots that might be added by the browser */
-.nav-list li::marker {
-    display: none !important;
-    content: "" !important;
-    font-size: 0 !important;
 }
 
 .nav-link {
@@ -365,7 +266,7 @@ a[href="customer-dashboard.html"]::after {
     padding: var(--spacing-sm) var(--spacing-lg);
     background: var(--primary-color);
     color: var(--text-light);
-    border: none;
+    border: 2px solid var(--primary-color);
     border-radius: var(--radius-md);
     font-weight: 600;
     text-decoration: none;
@@ -373,11 +274,13 @@ a[href="customer-dashboard.html"]::after {
     transition: all var(--transition-fast);
     font-size: var(--font-size-base);
     line-height: 1;
+    min-height: 44px; /* Ensure minimum touch target */
 }
 
 .btn:hover, .btn:focus {
     background: var(--secondary-color);
     color: var(--text-light);
+    border-color: var(--secondary-color);
     text-decoration: none;
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
@@ -386,7 +289,7 @@ a[href="customer-dashboard.html"]::after {
 }
 
 .btn-secondary {
-    background: transparent;
+    background: var(--background-light);
     color: var(--primary-color);
     border: 2px solid var(--primary-color);
 }
@@ -406,6 +309,54 @@ a[href="customer-dashboard.html"]::after {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+    background: var(--text-muted);
+    border-color: var(--text-muted);
+    color: var(--text-light);
+}
+
+/* Additional button variants for better visibility */
+.btn-success {
+    background: var(--success-color);
+    border-color: var(--success-color);
+    color: var(--text-light);
+}
+
+.btn-success:hover, .btn-success:focus {
+    background: #1e7e34;
+    border-color: #1e7e34;
+}
+
+.btn-danger {
+    background: var(--error-color);
+    border-color: var(--error-color);
+    color: var(--text-light);
+}
+
+.btn-danger:hover, .btn-danger:focus {
+    background: #c82333;
+    border-color: #c82333;
+}
+
+.btn-warning {
+    background: var(--warning-color);
+    border-color: var(--warning-color);
+    color: var(--text-dark);
+}
+
+.btn-warning:hover, .btn-warning:focus {
+    background: #e0a800;
+    border-color: #e0a800;
+}
+
+.btn-info {
+    background: var(--info-color);
+    border-color: var(--info-color);
+    color: var(--text-light);
+}
+
+.btn-info:hover, .btn-info:focus {
+    background: #138496;
+    border-color: #138496;
 }
 
 /* ===== CARDS ===== */
