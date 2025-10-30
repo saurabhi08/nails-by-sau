@@ -1453,8 +1453,20 @@
         
         // Logout functionality
         document.getElementById('logout-btn').addEventListener('click', function() {
-            localStorage.removeItem('user');
-            location.reload();
+            try {
+                if (window.firebase && firebase.auth) {
+                    firebase.auth().signOut().finally(() => {
+                        localStorage.removeItem('user');
+                        window.location.href = 'index.html';
+                    });
+                } else {
+                    localStorage.removeItem('user');
+                    window.location.href = 'index.html';
+                }
+            } catch (e) {
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            }
         });
         
         // Global functions for appointment actions
