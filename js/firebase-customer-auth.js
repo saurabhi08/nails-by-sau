@@ -136,12 +136,11 @@ class CustomerAuth {
 
             // Prefer fetching by UID if available, fallback to email
             let query = db.collection('appointments').where('customerUid', '==', user.uid);
-            let snapshot = await query.orderBy('appointmentDate', 'desc').get();
+            let snapshot = await query.get();
 
             if (snapshot.empty) {
                 snapshot = await db.collection('appointments')
                     .where('email', '==', user.email)
-                    .orderBy('appointmentDate', 'desc')
                     .get();
             }
 
@@ -167,6 +166,8 @@ class CustomerAuth {
                 return true;
             });
 
+            // Sort newest first by date string if present
+            appointmentsList.sort((a, b) => String(b.appointmentDate || '').localeCompare(String(a.appointmentDate || '')));
             return { success: true, appointments: appointmentsList };
         } catch (error) {
             console.error('Error fetching customer appointments:', error);
