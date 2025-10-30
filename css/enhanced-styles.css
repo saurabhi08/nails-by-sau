@@ -608,3 +608,17 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     gap: var(--space-sm);
 }
+
+/* Force-remove bullets from top navigation across all pages */
+.header .nav-menu .nav-list,
+.header .nav-menu .nav-list li {
+    list-style: none !important;
+    margin: 0;
+    padding: 0;
+}
+.header .nav-menu .nav-list li::marker,
+.header .nav-menu .nav-list li::before,
+.header .nav-menu .nav-list li::after {
+    content: none !important;
+    display: none !important;
+}

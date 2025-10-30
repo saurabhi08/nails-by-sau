@@ -238,6 +238,13 @@ function showAppointmentConfirmation() {
     } else if (window.showAlert) {
         window.showAlert('🎉 Your appointment has been booked and payment processed successfully! You will receive a confirmation email shortly.', 'success');
     }
+
+    // Send notifications (email + SMS queue)
+    if (appointmentData && window.Notifications && window.Notifications.notifyBooking) {
+        window.Notifications.notifyBooking(appointmentData).catch(err => {
+            console.warn('Notification failed:', err);
+        });
+    }
 }
 
 // Alternative payment methods

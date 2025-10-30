@@ -343,6 +343,12 @@
     
     <script src="js/main.js"></script>
     
+    <!-- Firebase for real auth context -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    
     <style>
         /* ===== CSS CUSTOM PROPERTIES ===== */
         :root {
@@ -1049,6 +1055,21 @@
             initForms();
             initModal();
             checkLoginStatus();
+            // Sync with Firebase auth if available
+            if (window.firebase && firebase.auth) {
+                firebase.auth().onAuthStateChanged((u) => {
+                    if (u) {
+                        // Normalize name from displayName or email prefix
+                        const name = u.displayName && u.displayName.trim() ? u.displayName : (u.email ? u.email.split('@')[0] : 'User');
+                        localStorage.setItem('user', JSON.stringify({
+                            email: u.email,
+                            name: name,
+                            phone: ''
+                        }));
+                        showDashboard();
+                    }
+                });
+            }
         });
         
         function initAccountTabs() {
@@ -1346,18 +1367,29 @@
         }
         
         function showDashboard() {
-            const user = JSON.parse(localStorage.getItem('user'));
-            
+            const user = JSON.parse(localStorage.getItem('user')) || {};
+
             // Update user name
-            document.getElementById('user-name').textContent = user.name;
-            
+            document.getElementById('user-name').textContent = user.name || (user.email ? user.email.split('@')[0] : 'User');
+
+            // Hide Login and Register tabs/panels when authenticated
+            const loginTab = document.querySelector('[data-tab="login"]');
+            const registerTab = document.querySelector('[data-tab="register"]');
+            const loginPanel = document.getElementById('login-panel');
+            const registerPanel = document.getElementById('register-panel');
+            if (loginTab) loginTab.style.display = 'none';
+            if (registerTab) registerTab.style.display = 'none';
+            if (loginPanel) { loginPanel.style.display = 'none'; loginPanel.setAttribute('aria-hidden','true'); }
+            if (registerPanel) { registerPanel.style.display = 'none'; registerPanel.setAttribute('aria-hidden','true'); }
+
             // Show dashboard tab
             const dashboardTab = document.querySelector('[data-tab="dashboard"]');
-            dashboardTab.style.display = 'flex';
-            
-            // Switch to dashboard
-            dashboardTab.click();
-            
+            if (dashboardTab) {
+                dashboardTab.style.display = 'flex';
+                // Switch to dashboard
+                dashboardTab.click();
+            }
+
             // Load user data
             loadUserData(user);
         }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logging out...</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <main class="main" style="padding: 2rem; text-align: center;">
+        <h1>Signing you out...</h1>
+        <p>Please wait a moment.</p>
+    </main>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- App Firebase config and auth helpers -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/firebase-auth.js"></script>
+
+    <script>
+    (function() {
+        function finish() {
+            localStorage.removeItem('adminAuth');
+            localStorage.removeItem('adminEmail');
+            window.location.replace('index.html');
+        }
+
+        function doLogout() {
+            try {
+                if (window.FirebaseAuth && window.FirebaseAuth.signOutAdmin) {
+                    window.FirebaseAuth.signOutAdmin().finally(finish);
+                } else if (window.firebase && firebase.auth) {
+                    firebase.auth().signOut().finally(finish);
+                } else {
+                    finish();
+                }
+            } catch (e) {
+                finish();
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', doLogout);
+        } else {
+            doLogout();
+        }
+    })();
+    </script>
+</body>
+<script>
+</script>
+</html>
+
+

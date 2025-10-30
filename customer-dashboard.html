@@ -21,6 +21,21 @@
     <!-- preload for faster loading -->
     <link rel="preload" href="css/style.css" as="style">
     <style>
+        /* Remove any list bullets in the top navigation on this page */
+        .header .nav-menu .nav-list,
+        .header .nav-menu .nav-list li {
+            list-style: none !important;
+            list-style-type: none !important;
+            margin: 0;
+            padding: 0;
+        }
+        .header .nav-menu .nav-list { padding-left: 0 !important; }
+        .header .nav-menu .nav-list li::marker,
+        .header .nav-menu .nav-list li::before,
+        .header .nav-menu .nav-list li::after {
+            content: '' !important;
+            display: none !important;
+        }
         .customer-dashboard {
             max-width: 1200px;
             margin: 0 auto;
@@ -312,7 +327,7 @@
     <main id="main-content" class="main" role="main">
         <div class="customer-dashboard">
             <div class="dashboard-header">
-                <h1 class="dashboard-title">My Appointments</h1>
+                <h1 class="dashboard-title">Customer Dashboard</h1>
                 <p class="dashboard-subtitle">Manage your nail appointments</p>
             </div>
 
@@ -336,6 +351,7 @@
     <script src="js/appointment-manager.js"></script>
     <script src="js/payment-history.js"></script>
     <script src="js/messaging-system.js"></script>
+    <script src="js/notifications.js"></script>
     <script src="js/customer-manager.js"></script>
     
     <script>
@@ -386,6 +402,16 @@
                 if (result.success && result.appointments.length > 0) {
                     displayAppointments(result.appointments);
                 } else {
+                    // Fallback: try localStorage backup
+                    try {
+                        const stored = localStorage.getItem('nailsbysau_appointments');
+                        const all = stored ? JSON.parse(stored) : [];
+                        const mine = all.filter(a => (a.customerUid && a.customerUid === user.uid) || (a.email && a.email === user.email));
+                        if (mine.length > 0) {
+                            displayAppointments(mine);
+                            return;
+                        }
+                    } catch (e) { console.warn('Local backup read failed', e); }
                     container.innerHTML = `
                         <div class="no-appointments">
                             <i class="fas fa-calendar-plus"></i>
@@ -458,7 +484,7 @@
                             <button class="btn-action btn-reschedule" onclick="rescheduleAppointment('${appointment.id}')">
                                 <i class="fas fa-calendar-alt"></i> Reschedule
                             </button>
-                            <button class="btn-action btn-cancel" onclick="cancelAppointment('${appointment.id}')">
+                            <button class="btn-action btn-cancel" onclick="cancelAppointment('${appointment.id}','${appointment.appointmentDate}','${appointment.appointmentTime}')">
                                 <i class="fas fa-times"></i> Cancel
                             </button>
                             <a href="contact.html" class="btn-action btn-contact">
@@ -483,11 +509,63 @@
             window.location.href = 'book-appointment.html';
         }
 
-        // Cancel appointment
-        function cancelAppointment(appointmentId) {
-            if (confirm('Are you sure you want to cancel this appointment?')) {
-                // Here you would implement the cancellation logic
-                alert('Appointment cancellation requested. We will contact you to confirm.');
+        // Cancel appointment (customer-initiated)
+        async function cancelAppointment(appointmentId, appointmentDate, appointmentTime) {
+            if (!appointmentId) return;
+            const ok = confirm('Are you sure you want to cancel this appointment?');
+            if (!ok) return;
+
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                alert('Please log in to cancel your appointment.');
+                return;
+            }
+
+            // Optimistic UI: disable all cancel buttons temporarily
+            const buttons = document.querySelectorAll(`button.btn-action.btn-cancel`);
+            buttons.forEach(b => b.disabled = true);
+
+            try {
+                if (window.FirebaseAppointments && window.FirebaseAppointments.updateAppointmentStatus) {
+                    let result = await window.FirebaseAppointments.updateAppointmentStatus(appointmentId, 'cancelled');
+                    
+                    // Fallback: if the known ID doesn't exist in Firestore, try to locate by email+date+time
+                    if (!result || !result.success) {
+                        const db = firebase.firestore();
+                        const userEmail = user.email;
+                        const snap = await db.collection('appointments')
+                            .where('email', '==', userEmail)
+                            .where('appointmentDate', '==', appointmentDate)
+                            .where('appointmentTime', '==', appointmentTime)
+                            .limit(1)
+                            .get();
+                        if (!snap.empty) {
+                            const docId = snap.docs[0].id;
+                            result = await window.FirebaseAppointments.updateAppointmentStatus(docId, 'cancelled');
+                        }
+                        if (!result || !result.success) throw new Error(result && result.error ? result.error : 'Update failed');
+                    }
+                } else {
+                    throw new Error('Appointments API not available');
+                }
+
+                if (window.showAlert) {
+                    window.showAlert('Appointment cancelled successfully.', 'success');
+                } else {
+                    alert('Appointment cancelled successfully.');
+                }
+
+                // Reload the customer appointments list
+                await loadCustomerAppointments();
+            } catch (e) {
+                console.error('Cancel error:', e);
+                if (window.showAlert) {
+                    window.showAlert('Could not cancel the appointment. Please try again.', 'error');
+                } else {
+                    alert('Could not cancel the appointment. Please try again.');
+                }
+            } finally {
+                buttons.forEach(b => b.disabled = false);
             }
         }
 

@@ -99,21 +99,13 @@ async function isUserAdmin(userId) {
     }
 }
 
-// Check if a user is an admin user (by email)
+// Check if a user is an admin user (by strict allowlist)
 function isAdminUser(user) {
     if (!user || !user.email) return false;
-    
-    // Check for admin email patterns
     const adminEmails = [
-        'admin@nailsbysau.com',
-        'admin@nailssbysau.com', // typo in original
-        'sau@nailsbysau.com',
-        'nailsbysau@gmail.com'
+        'survesaurabhi7@gmail.com'
     ];
-    
-    return adminEmails.includes(user.email.toLowerCase()) || 
-           user.email.toLowerCase().includes('admin') ||
-           localStorage.getItem('adminAuth') === 'true';
+    return adminEmails.includes(user.email.toLowerCase());
 }
 
 // Reset password

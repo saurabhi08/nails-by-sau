@@ -16,6 +16,24 @@
     
     <link rel="preload" href="css/style.css" as="style">
     <link rel="preload" href="js/main.js" as="script">
+
+    <style>
+    /* Page-specific overrides: make Export and Logout buttons white */
+    #export-data-btn,
+    #logout-admin-btn {
+        background: #ffffff;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+    }
+    #export-data-btn:hover,
+    #export-data-btn:focus,
+    #logout-admin-btn:hover,
+    #logout-admin-btn:focus {
+        background: #ffffff;
+        color: var(--secondary-color);
+        border-color: var(--secondary-color);
+    }
+    </style>
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -82,6 +100,11 @@
                             <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
                             Login to Dashboard
                         </button>
+                        <div style="margin-top: 0.5rem;">
+                            <button type="button" id="admin-forgot-password" class="btn btn-secondary" style="background: transparent; border: none; color: var(--primary-color); padding: 0; text-decoration: underline; cursor: pointer;">
+                                Forgot password?
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -1218,7 +1241,26 @@
             initAdminLogin();
             initDashboardTabs();
             initPasswordToggle();
+            initForgotPassword();
             checkAdminAuth();
+
+            // URL-based logout trigger: admin-dashboard.html?logout=1
+            try {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('logout') === '1') {
+                    if (window.FirebaseAuth && window.FirebaseAuth.signOutAdmin) {
+                        window.FirebaseAuth.signOutAdmin().finally(() => {
+                            window.location.replace('index.html');
+                        });
+                    } else if (window.firebase && firebase.auth) {
+                        firebase.auth().signOut().finally(() => {
+                            localStorage.removeItem('adminAuth');
+                            localStorage.removeItem('adminEmail');
+                            window.location.replace('index.html');
+                        });
+                    }
+                }
+            } catch (e) { console.warn('Logout param handling error', e); }
         });
         
         function initAdminLogin() {
@@ -1229,6 +1271,42 @@
                     handleAdminLogin();
                 });
             }
+        }
+
+        function initForgotPassword() {
+            const btn = document.getElementById('admin-forgot-password');
+            if (!btn) return;
+            btn.addEventListener('click', async function() {
+                const emailInput = document.getElementById('admin-email');
+                const email = emailInput ? emailInput.value.trim() : '';
+                if (!email) {
+                    if (window.MessagingSystem) {
+                        window.MessagingSystem.showWarning('Enter your admin email to reset password.');
+                    } else {
+                        alert('Enter your admin email to reset password.');
+                    }
+                    return;
+                }
+                try {
+                    const result = await window.FirebaseAuth.resetPassword(email);
+                    if (result && result.success) {
+                        if (window.MessagingSystem) {
+                            window.MessagingSystem.showSuccess('Password reset email sent. Check your inbox.');
+                        } else {
+                            alert('Password reset email sent. Check your inbox.');
+                        }
+                    } else {
+                        throw new Error(result && result.error ? result.error : 'Unable to send reset email');
+                    }
+                } catch (err) {
+                    console.error('Reset password error:', err);
+                    if (window.MessagingSystem) {
+                        window.MessagingSystem.showError('Could not send reset email: ' + (err.message || 'Unknown error'));
+                    } else {
+                        alert('Could not send reset email: ' + (err.message || 'Unknown error'));
+                    }
+                }
+            });
         }
         
         function initDashboardTabs() {
@@ -1285,28 +1363,45 @@
         }
         
         function checkAdminAuth() {
-            const isAdmin = localStorage.getItem('adminAuth');
-            if (isAdmin === 'true') {
-                showDashboard();
-            } else {
-                showLogin();
+            console.log('Checking admin auth...');
+            
+            // Wait for Firebase to be ready
+            if (typeof firebase === 'undefined' || !firebase.auth) {
+                console.error('Firebase not loaded yet, retrying in 500ms...');
+                setTimeout(() => checkAdminAuth(), 500);
+                return;
             }
             
             // Check authentication on page load
             firebase.auth().onAuthStateChanged((user) => {
+                console.log('Auth state changed, user:', user ? user.email : 'none');
+                
                 if (user) {
-                    // User is logged in, check if they're admin
-                    const email = user.email;
-                    // You can add additional admin email check here if needed
-                    if (email && (email.includes('admin') || email.includes('@nailsbysau.com'))) {
+                    // User is logged in, check if they're admin (strict allowlist)
+                    const email = user.email.toLowerCase();
+                    const isAdminEmail = email === 'survesaurabhi7@gmail.com';
+                    
+                    if (isAdminEmail) {
+                        console.log('Admin authenticated, showing dashboard');
+                        if (window.MessagingSystem) { window.MessagingSystem.clearAll(); }
                         showDashboard();
                     } else {
                         // Not an admin, redirect away
+                        console.log('Not an admin user, redirecting...');
+                        localStorage.removeItem('adminAuth');
+                        firebase.auth().signOut();
+                        if (window.MessagingSystem) { window.MessagingSystem.clearAll(); }
                         alert('Access denied. Admin access only.');
                         window.location.href = 'index.html';
                     }
                 } else {
-                    // No user logged in, show login
+                    // No user logged in
+                    console.log('No user logged in, showing login');
+                    // Ensure any stale admin flags are cleared
+                    localStorage.removeItem('adminAuth');
+                    localStorage.removeItem('adminEmail');
+                    
+                    if (window.MessagingSystem) { window.MessagingSystem.clearAll(); }
                     showLogin();
                 }
             });
@@ -1323,6 +1418,7 @@
                 const result = await window.FirebaseAuth.signInAdmin(email, password);
                 
                 if (result.success) {
+                    if (window.MessagingSystem) { window.MessagingSystem.clearAll(); }
                     showDashboard();
                     
                     if (window.showAlert) {
@@ -1333,6 +1429,7 @@
                 }
             } catch (error) {
                 console.error('Login error:', error);
+                if (window.MessagingSystem) { window.MessagingSystem.clearAll(); }
                 if (window.showAlert) {
                     window.showAlert('Invalid admin credentials. Please try again.', 'error');
                 }
@@ -1354,6 +1451,10 @@
             
             // Set admin auth in localStorage
             localStorage.setItem('adminAuth', 'true');
+            
+            // Setup button event listeners
+            setupLogoutButton();
+            setupExportButton();
             
             // Load dashboard data
             loadDashboardData();
@@ -1912,31 +2013,81 @@
             showAvailabilityModal();
         });
 
-        // Logout functionality
-        document.getElementById('logout-admin-btn').addEventListener('click', async function() {
-            try {
-                const result = await window.FirebaseAuth.signOutAdmin();
-                if (result.success) {
-                    showLogin();
-                } else {
-                    if (window.MessagingSystem) {
-                        window.MessagingSystem.showError('Failed to logout: ' + result.error);
+        // Logout functionality - Set up after dashboard is shown
+        function setupLogoutButton() {
+            const logoutBtn = document.getElementById('logout-admin-btn');
+            if (logoutBtn) {
+                // Remove any existing event listeners
+                logoutBtn.replaceWith(logoutBtn.cloneNode(true));
+                const newLogoutBtn = document.getElementById('logout-admin-btn');
+                
+                newLogoutBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    try {
+                        console.log('Logout button clicked');
+                        
+                        // Sign out from Firebase
+                        if (window.FirebaseAuth && window.FirebaseAuth.signOutAdmin) {
+                            const result = await window.FirebaseAuth.signOutAdmin();
+                            console.log('Sign out result:', result);
+                        } else {
+                            // Fallback if FirebaseAuth is not available
+                            await firebase.auth().signOut();
+                            localStorage.removeItem('adminAuth');
+                            localStorage.removeItem('adminEmail');
+                        }
+                        
+                        // Clear all admin-related data
+                        localStorage.removeItem('adminAuth');
+                        localStorage.removeItem('adminEmail');
+                        
+                        // Show logout confirmation
+                        if (window.MessagingSystem) {
+                            window.MessagingSystem.showLogoutConfirmation();
+                        }
+                        
+                        // Redirect to home page after a short delay
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                        
+                    } catch (error) {
+                        console.error('Error logging out:', error);
+                        // Even if there's an error, clear local storage and redirect
+                        localStorage.removeItem('adminAuth');
+                        localStorage.removeItem('adminEmail');
+                        
+                        if (window.MessagingSystem) {
+                            window.MessagingSystem.showError('Error logging out. Redirecting...');
+                        }
+                        
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 2000);
                     }
-                }
-            } catch (error) {
-                console.error('Error logging out:', error);
-                if (window.MessagingSystem) {
-                    window.MessagingSystem.showError('Error logging out. Please try again.');
-                }
+                });
             }
-        });
+        }
         
-        // Export data functionality
-        document.getElementById('export-data-btn').addEventListener('click', function() {
-            if (window.showAlert) {
-                window.showAlert('Data export functionality would generate a CSV file here.', 'info');
+        // Export data functionality - Set up after dashboard is shown
+        function setupExportButton() {
+            const exportBtn = document.getElementById('export-data-btn');
+            if (exportBtn) {
+                // Remove any existing event listeners
+                exportBtn.replaceWith(exportBtn.cloneNode(true));
+                const newExportBtn = document.getElementById('export-data-btn');
+                
+                newExportBtn.addEventListener('click', function() {
+                    if (window.showAlert) {
+                        window.showAlert('Data export functionality would generate a CSV file here.', 'info');
+                    } else if (window.MessagingSystem) {
+                        window.MessagingSystem.showInfo('Data export functionality would generate a CSV file here.');
+                    }
+                });
             }
-        });
+        }
     </script>
 </body>
 </html>

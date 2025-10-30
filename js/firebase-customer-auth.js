@@ -131,18 +131,23 @@ class CustomerAuth {
         }
 
         try {
-            const appointments = await firebase.firestore()
-                .collection('appointments')
-                .where('email', '==', this.currentCustomer.email)
-                .orderBy('appointmentDate', 'desc')
-                .get();
+            const db = firebase.firestore();
+            const user = this.currentCustomer;
+
+            // Prefer fetching by UID if available, fallback to email
+            let query = db.collection('appointments').where('customerUid', '==', user.uid);
+            let snapshot = await query.orderBy('appointmentDate', 'desc').get();
+
+            if (snapshot.empty) {
+                snapshot = await db.collection('appointments')
+                    .where('email', '==', user.email)
+                    .orderBy('appointmentDate', 'desc')
+                    .get();
+            }
 
             const appointmentsList = [];
-            appointments.forEach(doc => {
-                appointmentsList.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
+            snapshot.forEach(doc => {
+                appointmentsList.push({ id: doc.id, ...doc.data() });
             });
 
             return { success: true, appointments: appointmentsList };
@@ -177,6 +182,10 @@ class CustomerAuth {
         const adminLinks = document.querySelectorAll('.admin-only');
         adminLinks.forEach(link => link.style.display = 'none');
 
+        // Hide guest-only links (e.g., Customer Login) when logged in
+        const guestOnlyLinks = document.querySelectorAll('.guest-only');
+        guestOnlyLinks.forEach(link => link.style.display = 'none');
+
         // Show customer links
         const customerLinks = document.querySelectorAll('.customer-only');
         customerLinks.forEach(link => link.style.display = 'block');
@@ -201,6 +210,10 @@ class CustomerAuth {
         // Hide customer links
         const customerLinks = document.querySelectorAll('.customer-only');
         customerLinks.forEach(link => link.style.display = 'none');
+
+        // Show guest-only links when not logged in
+        const guestOnlyLinks = document.querySelectorAll('.guest-only');
+        guestOnlyLinks.forEach(link => link.style.display = 'block');
 
         // Update navigation
         this.updateNavigationForGuest();
@@ -259,17 +272,12 @@ class CustomerAuth {
     isAdminUser(user) {
         if (!user || !user.email) return false;
         
-        // Check for admin email patterns
+        // Strict admin email allowlist
         const adminEmails = [
-            'admin@nailsbysau.com',
-            'admin@nailssbysau.com', // typo in original
-            'sau@nailsbysau.com',
-            'nailsbysau@gmail.com'
+            'survesaurabhi7@gmail.com'
         ];
         
-        return adminEmails.includes(user.email.toLowerCase()) || 
-               user.email.toLowerCase().includes('admin') ||
-               localStorage.getItem('adminAuth') === 'true';
+        return adminEmails.includes(user.email.toLowerCase());
     }
 
     // Check if current user is customer

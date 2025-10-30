@@ -7,6 +7,20 @@ class AppointmentManager {
         this.init();
     }
 
+    // Map selected service to standardized name, price, and duration
+    getServiceDetails(serviceSlug) {
+        const catalog = {
+            'classic-manicure': { name: 'Classic Manicure', price: 35, duration: 60 },
+            'gel-manicure': { name: 'Gel Manicure', price: 45, duration: 75 },
+            'french-manicure': { name: 'French Manicure', price: 40, duration: 70 },
+            'nail-art': { name: 'Nail Art Design', price: 50, duration: 90 },
+            'nail-extensions': { name: 'Nail Extensions', price: 80, duration: 120 },
+            '3d-nail-art': { name: '3D Nail Art', price: 75, duration: 120 }
+        };
+        // Default if unknown
+        return catalog[serviceSlug] || { name: serviceSlug, price: 0, duration: 60 };
+    }
+
     // Initialize the appointment manager
     init() {
         this.loadAppointments();
@@ -41,8 +55,11 @@ class AppointmentManager {
         event.preventDefault();
         
         const formData = new FormData(event.target);
+        const selectedService = formData.get('service');
+        const details = this.getServiceDetails(selectedService);
+
         const appointmentData = {
-            service: formData.get('service'),
+            service: details.name,
             appointmentDate: formData.get('appointment-date'),
             appointmentTime: formData.get('appointment-time'),
             firstName: formData.get('first-name'),
@@ -51,10 +68,26 @@ class AppointmentManager {
             phone: formData.get('phone'),
             notes: formData.get('notes'),
             clientAddress: formData.get('client-address'),
+            price: details.price,
+            duration: details.duration,
             status: 'pending',
             createdAt: new Date().toISOString(),
             id: this.generateAppointmentId()
         };
+
+        // If customer is logged in, ensure the booking is tied to their account
+        try {
+            let user = null;
+            if (window.CustomerAuth && window.CustomerAuth.currentCustomer) {
+                user = window.CustomerAuth.currentCustomer;
+            } else if (window.firebase && firebase.auth && firebase.auth().currentUser) {
+                user = firebase.auth().currentUser;
+            }
+            if (user) {
+                appointmentData.customerUid = user.uid;
+                appointmentData.email = user.email; // ensure linkage to logged-in account
+            }
+        } catch (e) { console.warn('Could not attach logged-in customer to appointment:', e); }
 
         try {
             // Save to Firebase
@@ -66,18 +99,23 @@ class AppointmentManager {
                 
                 // Show success message
                 this.showSuccessMessage('Appointment booked successfully!');
+
+                // Send notifications (email + SMS queue)
+                if (window.Notifications && window.Notifications.notifyBooking) {
+                    window.Notifications.notifyBooking(appointmentData).catch(err => {
+                        console.warn('Notification failed:', err);
+                    });
+                }
                 
-                // Reset form
-                event.target.reset();
-                
-                // Redirect to confirmation or dashboard
-                setTimeout(() => {
-                    if (window.CustomerAuth && window.CustomerAuth.currentCustomer) {
-                        window.location.href = 'customer-dashboard.html';
-                    } else {
-                        window.location.href = 'index.html';
+                // Prepare data for payment and show payment options
+                try {
+                    window.currentAppointmentData = appointmentData;
+                    if (window.PaymentIntegration && window.PaymentIntegration.showPaymentOptions) {
+                        window.PaymentIntegration.showPaymentOptions(appointmentData);
                     }
-                }, 2000);
+                } catch (e) {
+                    console.warn('Could not open payment options:', e);
+                }
             } else {
                 throw new Error(result.error);
             }
