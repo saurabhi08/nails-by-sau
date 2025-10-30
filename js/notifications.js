@@ -17,6 +17,20 @@
         }
     }
 
+    // Notify customer when an appointment is cancelled (admin-initiated or otherwise)
+    async function notifyCancellation(appointmentData) {
+        try {
+            await Promise.all([
+                sendCancellationEmail(appointmentData),
+                queueCancellationSms(appointmentData)
+            ]);
+            return { success: true };
+        } catch (err) {
+            console.error('Cancellation notification error:', err);
+            return { success: false, error: err.message };
+        }
+    }
+
     async function sendEmailNotification(appointmentData) {
         const customerEmail = appointmentData.email;
         const recipients = [customerEmail].filter(Boolean);
@@ -63,11 +77,11 @@
         };
     }
 
-    async function saveEmailQueue(appointmentData, recipients) {
+    async function saveEmailQueue(appointmentData, recipients, typeOverride) {
         try {
             const db = window.firebaseDB || firebase.firestore();
             const payload = {
-                type: 'booking_confirmation',
+                type: typeOverride || 'booking_confirmation',
                 recipients: recipients,
                 data: {
                     email: appointmentData.email,
@@ -107,6 +121,57 @@
         }
     }
 
+    async function sendCancellationEmail(appointmentData) {
+        const customerEmail = appointmentData.email;
+        const recipients = [customerEmail].filter(Boolean);
+
+        // If EmailJS is configured, send immediately (use optional cancel template if provided)
+        if (window.emailjs && typeof window.emailjs.send === 'function') {
+            const serviceId = window.EMAILJS_SERVICE_ID;
+            const cancelTemplateId = window.EMAILJS_TEMPLATE_ID_CANCEL || null;
+            const defaultTemplateId = window.EMAILJS_TEMPLATE_ID;
+            const publicKey = window.EMAILJS_PUBLIC_KEY;
+
+            if (serviceId && publicKey && (cancelTemplateId || defaultTemplateId)) {
+                try {
+                    window.emailjs.init(publicKey);
+                    const templateToUse = cancelTemplateId || defaultTemplateId;
+                    const sendPromises = recipients.map((toEmail) => {
+                        const params = buildCancellationTemplateParams(appointmentData, toEmail);
+                        return window.emailjs.send(serviceId, templateToUse, params);
+                    });
+                    await Promise.all(sendPromises);
+                    return { success: true };
+                } catch (e) {
+                    console.error('EmailJS cancellation send failed, queueing:', e);
+                    return saveEmailQueue(appointmentData, recipients, 'booking_cancelled');
+                }
+            }
+        }
+
+        // Fallback: queue cancellation email
+        return saveEmailQueue(appointmentData, recipients, 'booking_cancelled');
+    }
+
+    async function queueCancellationSms(appointmentData) {
+        try {
+            const db = window.firebaseDB || firebase.firestore();
+            const recipients = [appointmentData.phone || null].filter(Boolean);
+            const payload = {
+                type: 'booking_cancelled',
+                recipients: recipients,
+                message: buildCancellationSms(appointmentData),
+                status: 'pending',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            await db.collection('smsQueue').add(payload);
+            return { success: true };
+        } catch (e) {
+            console.error('Failed to queue cancellation SMS:', e);
+            return { success: false, error: e.message };
+        }
+    }
+
     function buildSmsMessage(appointmentData) {
         const service = appointmentData.service || appointmentData.serviceName || 'Service';
         const date = appointmentData.appointmentDate || appointmentData.date || '';
@@ -114,8 +179,30 @@
         return `Nails By Sau: Booking confirmed for ${service} on ${date} at ${time}. Reply if you need to reschedule.`;
     }
 
+    function buildCancellationSms(appointmentData) {
+        const service = appointmentData.service || appointmentData.serviceName || 'Service';
+        const date = appointmentData.appointmentDate || appointmentData.date || '';
+        const time = appointmentData.appointmentTime || appointmentData.time || '';
+        return `Nails By Sau: Your appointment for ${service} on ${date} at ${time} has been cancelled.`;
+    }
+
+    function buildCancellationTemplateParams(appointmentData, toEmail) {
+        return {
+            to_email: toEmail,
+            customer_name: appointmentData.name || appointmentData.firstName || 'Customer',
+            customer_email: appointmentData.email,
+            customer_phone: appointmentData.phone || '',
+            service: appointmentData.service || appointmentData.serviceName || '',
+            appointment_date: appointmentData.appointmentDate || appointmentData.date || '',
+            appointment_time: appointmentData.appointmentTime || appointmentData.time || '',
+            notes: appointmentData.notes || '',
+            is_cancellation: true
+        };
+    }
+
     window.Notifications = {
-        notifyBooking
+        notifyBooking,
+        notifyCancellation
     };
 })();
 

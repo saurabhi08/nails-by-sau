@@ -216,8 +216,8 @@ a:hover, a:focus {
 
 /* Navigation list styling - clean and simple */
 .nav-list {
-    list-style: none;
-    padding: 0;
+    list-style: none !important;
+    padding: 0 !important;
     margin: 0;
 }
 
@@ -228,15 +228,18 @@ a:hover, a:focus {
 }
 
 .nav-list li::marker {
-    display: none;
+    content: none !important;
+    display: none !important;
 }
 
 .nav-list li::before {
-    display: none;
+    content: none !important;
+    display: none !important;
 }
 
 .nav-list li::after {
-    display: none;
+    content: none !important;
+    display: none !important;
 }
 
 .nav-link {
@@ -312,6 +315,24 @@ a:hover, a:focus {
     background: var(--text-muted);
     border-color: var(--text-muted);
     color: var(--text-light);
+}
+
+/* Ensure strong contrast when buttons appear on gradient headers/hero blocks */
+.page-header .btn,
+.dashboard-header .btn,
+.hero .btn {
+    background: #ffffff;
+    color: var(--primary-color);
+    border-color: #ffffff;
+    box-shadow: var(--shadow-md);
+}
+
+.page-header .btn:hover,
+.dashboard-header .btn:hover,
+.hero .btn:hover {
+    background: var(--secondary-color);
+    color: #ffffff;
+    border-color: var(--secondary-color);
 }
 
 /* Additional button variants for better visibility */

@@ -145,9 +145,38 @@ class CustomerAuth {
                     .get();
             }
 
-            const appointmentsList = [];
+            let appointmentsList = [];
             snapshot.forEach(doc => {
                 appointmentsList.push({ id: doc.id, ...doc.data() });
+            });
+
+            // Ensure only this user's records and exclude cancelled
+            const userEmail = (user.email || '').toLowerCase();
+            const userUid = user.uid;
+            appointmentsList = appointmentsList
+                .filter(a => (a.customerUid === userUid || (a.email || '').toLowerCase() === userEmail))
+                .filter(a => (a.status || 'confirmed').toLowerCase() !== 'cancelled');
+
+            // Keep only upcoming appointments (today or later)
+            try {
+                const now = new Date();
+                const yyyy = now.getFullYear();
+                const mm = String(now.getMonth() + 1).padStart(2, '0');
+                const dd = String(now.getDate()).padStart(2, '0');
+                const todayStr = `${yyyy}-${mm}-${dd}`;
+
+                appointmentsList = appointmentsList.filter(a => {
+                    const dateStr = (a.appointmentDate || '').slice(0, 10);
+                    return dateStr >= todayStr;
+                });
+            } catch (e) { /* ignore parse issues and keep list */ }
+
+            // Optional: de-duplicate by id in case of overlaps
+            const seen = new Set();
+            appointmentsList = appointmentsList.filter(a => {
+                if (seen.has(a.id)) return false;
+                seen.add(a.id);
+                return true;
             });
 
             return { success: true, appointments: appointmentsList };

@@ -103,7 +103,7 @@
                         <div style="margin-top: 0.5rem;">
                             <button type="button" id="admin-forgot-password" class="btn btn-secondary" style="background: transparent; border: none; color: var(--primary-color); padding: 0; text-decoration: underline; cursor: pointer;">
                                 Forgot password?
-                            </button>
+                        </button>
                         </div>
                     </div>
                 </form>
@@ -1965,6 +1965,24 @@
                         if (window.showAlert) {
                             window.showAlert('Appointment cancelled successfully.', 'success');
                         }
+                        // Notify customer about cancellation
+                        try {
+                            const db = firebase.firestore();
+                            const doc = await db.collection('appointments').doc(id).get();
+                            if (doc.exists && window.Notifications && window.Notifications.notifyCancellation) {
+                                const data = doc.data() || {};
+                                // Ensure essential fields
+                                const payload = {
+                                    email: data.email,
+                                    phone: data.phone,
+                                    service: data.service,
+                                    appointmentDate: data.appointmentDate,
+                                    appointmentTime: data.appointmentTime,
+                                    name: data.name || data.firstName || ''
+                                };
+                                window.Notifications.notifyCancellation(payload);
+                            }
+                        } catch (e) { console.warn('Cancellation notify failed', e); }
                         // Reload appointments
                         await loadDashboardData();
                     } else {
@@ -2053,8 +2071,8 @@
                             window.location.href = 'index.html';
                         }, 1500);
                         
-                    } catch (error) {
-                        console.error('Error logging out:', error);
+            } catch (error) {
+                console.error('Error logging out:', error);
                         // Even if there's an error, clear local storage and redirect
                         localStorage.removeItem('adminAuth');
                         localStorage.removeItem('adminEmail');
@@ -2080,15 +2098,24 @@
                 const newExportBtn = document.getElementById('export-data-btn');
                 
                 newExportBtn.addEventListener('click', function() {
-                    if (window.showAlert) {
-                        window.showAlert('Data export functionality would generate a CSV file here.', 'info');
+            if (window.showAlert) {
+                window.showAlert('Data export functionality would generate a CSV file here.', 'info');
                     } else if (window.MessagingSystem) {
                         window.MessagingSystem.showInfo('Data export functionality would generate a CSV file here.');
-                    }
-                });
+            }
+        });
             }
         }
     </script>
+    <!-- EmailJS SDK and Notifications for admin-triggered cancellations -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        window.EMAILJS_PUBLIC_KEY = window.EMAILJS_PUBLIC_KEY || '4gNTElFkDPQoVT5pX';
+        window.EMAILJS_SERVICE_ID = window.EMAILJS_SERVICE_ID || 'service_kqj23do';
+        window.EMAILJS_TEMPLATE_ID = window.EMAILJS_TEMPLATE_ID || 'template_87vmuka';
+        window.EMAILJS_TEMPLATE_ID_CANCEL = window.EMAILJS_TEMPLATE_ID_CANCEL || 'template_ijnruzk';
+    </script>
+    <script src="js/notifications.js"></script>
 </body>
 </html>
 

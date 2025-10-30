@@ -206,45 +206,9 @@
                 </button>
             </div>
             
-            <div class="dashboard-stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="total-appointments">0</div>
-                    <div class="stat-label">Total Appointments</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="upcoming-appointments">0</div>
-                    <div class="stat-label">Upcoming Appointments</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="total-spent">$0</div>
-                    <div class="stat-label">Total Spent</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="favorite-service">-</div>
-                    <div class="stat-label">Favorite Service</div>
-                </div>
-            </div>
+            <!-- Removed stats summary cards per request -->
             
-            <div class="card">
-                <h3>Upcoming Appointments</h3>
-                <div class="appointments-list" id="upcoming-appointments-list">
-                    <div class="no-appointments">
-                        <i class="fas fa-calendar-times" aria-hidden="true"></i>
-                        <p>No upcoming appointments</p>
-                        <a href="book-appointment.html" class="btn">Book an Appointment</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h3>Appointment History</h3>
-                <div class="appointments-list" id="appointment-history-list">
-                    <div class="no-appointments">
-                        <i class="fas fa-history" aria-hidden="true"></i>
-                        <p>No appointment history</p>
-                    </div>
-                </div>
-            </div>
+            <!-- Removed Upcoming Appointments and Appointment History (mock data) -->
             
             <div class="card">
                 <h3>Account Settings</h3>
@@ -1426,15 +1390,9 @@
                 ]
             };
             
-            // Update stats
-            document.getElementById('total-appointments').textContent = mockData.totalAppointments;
-            document.getElementById('upcoming-appointments').textContent = mockData.upcomingAppointments;
-            document.getElementById('total-spent').textContent = `$${mockData.totalSpent}`;
-            document.getElementById('favorite-service').textContent = mockData.favoriteService;
+            // Stats cards removed; skip totals display
             
-            // Update appointments
-            updateAppointmentsList('upcoming-appointments-list', mockData.appointments.filter(apt => apt.status === 'upcoming'));
-            updateAppointmentsList('appointment-history-list', mockData.appointments.filter(apt => apt.status === 'completed'));
+            // Appointments lists removed on this page
             
             // Update settings form
             document.getElementById('settings-first-name').value = user.name.split(' ')[0];

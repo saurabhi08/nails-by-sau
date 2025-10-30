@@ -357,24 +357,49 @@
     <script>
         // Wait for authentication to initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Listen for auth state changes
+            const container = document.getElementById('appointments-container');
+            let authResolved = false;
+
+            // Keep loading state until auth resolves to avoid login flash
+            container.innerHTML = `
+                <div class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Loading your appointments...</p>
+                </div>
+            `;
+
             firebase.auth().onAuthStateChanged((user) => {
+                authResolved = true;
                 if (user) {
-                    // User is logged in, load appointments
                     loadCustomerAppointments();
                 } else {
-                    // User is not logged in, show login prompt
-                    const container = document.getElementById('appointments-container');
-                    container.innerHTML = `
-                        <div class="no-appointments">
-                            <i class="fas fa-lock"></i>
-                            <h3>Please Log In</h3>
-                            <p>You need to be logged in to view your appointments.</p>
-                            <a href="customer-login.html" class="btn-book-now">Log In</a>
-                        </div>
-                    `;
+                    // Delay showing login prompt to give auth a moment on first load
+                    setTimeout(() => {
+                        if (!firebase.auth().currentUser) {
+                            container.innerHTML = `
+                                <div class=\"no-appointments\"> 
+                                    <i class=\"fas fa-lock\"></i>
+                                    <h3>Please Log In</h3>
+                                    <p>You need to be logged in to view your appointments.</p>
+                                    <a href=\"customer-login.html\" class=\"btn-book-now\">Log In</a>
+                                </div>
+                            `;
+                        }
+                    }, 400);
                 }
             });
+            // URL-based logout trigger: customer-dashboard.html?logout=1
+            try {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('logout') === '1') {
+                    if (window.firebase && firebase.auth) {
+                        firebase.auth().signOut().finally(() => {
+                            localStorage.removeItem('user');
+                            window.location.replace('index.html');
+                        });
+                    }
+                }
+            } catch (e) { console.warn('Logout param handling error', e); }
         });
 
         // Load customer appointments
@@ -434,12 +459,35 @@
             }
         }
 
+        // Safe date formatter that avoids timezone shifts
+        function formatDateSafe(dateInput) {
+            if (!dateInput) return '';
+            try {
+                const str = String(dateInput);
+                // Expect YYYY-MM-DD or ISO; use the first 10 chars
+                const [y, m, d] = str.slice(0, 10).split('-').map(v => parseInt(v, 10));
+                if (!y || !m || !d) return str;
+                const monthNames = [
+                    'January','February','March','April','May','June',
+                    'July','August','September','October','November','December'
+                ];
+                const weekdayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                // Build a UTC date to avoid local TZ offsets
+                const dt = new Date(Date.UTC(y, m - 1, d));
+                const weekday = weekdayNames[dt.getUTCDay()];
+                const monthName = monthNames[m - 1];
+                return `${weekday}, ${monthName} ${d}, ${y}`;
+            } catch (_) {
+                return String(dateInput);
+            }
+        }
+
         // Display appointments
         function displayAppointments(appointments) {
             const container = document.getElementById('appointments-container');
+            const totalCount = appointments.length;
             
             const appointmentsHTML = appointments.map(appointment => {
-                const appointmentDate = new Date(appointment.appointmentDate);
                 const status = appointment.status || 'confirmed';
                 const statusClass = `status-${status}`;
                 
@@ -453,12 +501,7 @@
                         <div class="appointment-details">
                             <div class="detail-item">
                                 <span class="detail-label">Date:</span>
-                                <span class="detail-value">${appointmentDate.toLocaleDateString('en-CA', { 
-                                    weekday: 'long', 
-                                    year: 'numeric', 
-                                    month: 'long', 
-                                    day: 'numeric' 
-                                })}</span>
+                                <span class="detail-value">${formatDateSafe(appointment.appointmentDate)}</span>
                             </div>
                             <div class="detail-item">
                                 <span class="detail-label">Time:</span>
@@ -496,6 +539,10 @@
             }).join('');
 
             container.innerHTML = `
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <h2 style="margin:0; font-size:1.25rem;">Your Appointments</h2>
+                    <span style="background:#f1f3f5; color:#343a40; padding:6px 12px; border-radius:16px; font-weight:600;">Total: ${totalCount}</span>
+                </div>
                 <div class="appointments-grid">
                     ${appointmentsHTML}
                 </div>
@@ -527,24 +574,87 @@
 
             try {
                 if (window.FirebaseAppointments && window.FirebaseAppointments.updateAppointmentStatus) {
-                    let result = await window.FirebaseAppointments.updateAppointmentStatus(appointmentId, 'cancelled');
-                    
-                    // Fallback: if the known ID doesn't exist in Firestore, try to locate by email+date+time
+                    const db = firebase.firestore();
+                    const userEmail = (user.email || '').toLowerCase();
+                    const userUid = user.uid;
+                    const normalizeDateKey = (input) => {
+                        try {
+                            if (!input) return '';
+                            const d = new Date(input);
+                            if (!isNaN(d.getTime())) {
+                                const y = d.getFullYear();
+                                const m = String(d.getMonth() + 1).padStart(2, '0');
+                                const dy = String(d.getDate()).padStart(2, '0');
+                                return `${y}-${m}-${dy}`;
+                            }
+                            return String(input).slice(0, 10);
+                        } catch (_) { return String(input).slice(0, 10); }
+                    };
+                    const dateKey = normalizeDateKey(appointmentDate);
+
+                    let result = { success: false };
+
+                    // 1) Try direct by doc ID if it exists and belongs to this user
+                    try {
+                        const doc = await db.collection('appointments').doc(appointmentId).get();
+                        if (doc.exists) {
+                            const data = doc.data() || {};
+                            const belongsToUser = (data.customerUid === userUid) || ((data.email || '').toLowerCase() === userEmail);
+                            if (belongsToUser && (data.status || 'confirmed').toLowerCase() !== 'cancelled') {
+                                result = await window.FirebaseAppointments.updateAppointmentStatus(appointmentId, 'cancelled');
+                            }
+                        }
+                    } catch (_) { /* ignore */ }
+
+                    // 2) Fallback search by UID → then by email
                     if (!result || !result.success) {
-                        const db = firebase.firestore();
-                        const userEmail = user.email;
-                        const snap = await db.collection('appointments')
-                            .where('email', '==', userEmail)
-                            .where('appointmentDate', '==', appointmentDate)
+                        let snap = await db.collection('appointments')
+                            .where('customerUid', '==', userUid)
+                            .where('appointmentDate', '==', dateKey)
                             .where('appointmentTime', '==', appointmentTime)
                             .limit(1)
                             .get();
+
+                        if (snap.empty) {
+                            snap = await db.collection('appointments')
+                                .where('email', '==', userEmail)
+                                .where('appointmentDate', '==', dateKey)
+                                .where('appointmentTime', '==', appointmentTime)
+                                .limit(1)
+                                .get();
+                        }
+
                         if (!snap.empty) {
                             const docId = snap.docs[0].id;
                             result = await window.FirebaseAppointments.updateAppointmentStatus(docId, 'cancelled');
                         }
-                        if (!result || !result.success) throw new Error(result && result.error ? result.error : 'Update failed');
+                        // 3) Final fallback: search by service + loose time match, then force merge update
+                        if ((!result || !result.success)) {
+                            const looseTime = String(appointmentTime).trim();
+                            const candidates = await db.collection('appointments')
+                                .where('appointmentDate', '==', dateKey)
+                                .get();
+                            let matched = null;
+                            candidates.forEach(doc => {
+                                const data = doc.data() || {};
+                                const belongs = (data.customerUid === userUid) || ((data.email || '').toLowerCase() === userEmail);
+                                if (!belongs) return;
+                                const timeEqual = String(data.appointmentTime || '').trim() === looseTime;
+                                if (timeEqual && (data.status || 'confirmed').toLowerCase() !== 'cancelled') {
+                                    matched = doc.id;
+                                }
+                            });
+                            if (matched) {
+                                await db.collection('appointments').doc(matched).set({
+                                    status: 'cancelled',
+                                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                                }, { merge: true });
+                                result = { success: true };
+                            }
+                        }
                     }
+
+                    if (!result || !result.success) throw new Error(result && result.error ? result.error : 'Update failed');
                 } else {
                     throw new Error('Appointments API not available');
                 }
@@ -569,10 +679,7 @@
             }
         }
 
-        // Load appointments when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            loadCustomerAppointments();
-        });
+        // Initial load will be triggered by onAuthStateChanged
     </script>
 </body>
 </html>
